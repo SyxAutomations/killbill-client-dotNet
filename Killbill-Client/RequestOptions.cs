@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Killbill_Client
 {
-    class RequestOptions
+    public class RequestOptions
     {
     }
 }

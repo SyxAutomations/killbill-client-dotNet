@@ -14,17 +14,11 @@
  * under the License.
  */
 
+using Killbill_Client;
+using Killbill_Client.model;
+
 namespace Killbill_Client.model {
-
-
-
-
-
-
-
-
-
-Properties(ignoreUnknown = true)
+    
 public abstract class KillBillObjects<T : KillBillObject> : ArrayList<T> {
 
     
@@ -46,70 +40,14 @@ public abstract class KillBillObjects<T : KillBillObject> : ArrayList<T> {
     private string paginationNextPageUri;
 
     
-    public <U : KillBillObjects<T>> U getNext(Class<U> clazz) throws KillBillClientException {
+    public <U : KillBillObjects<T>> U getNext(Class<U> clazz) {
         if (killBillHttpClient == null || paginationNextPageUri == null) {
             return null;
         }
         return killBillHttpClient.doGet(paginationNextPageUri, KillBillHttpClient.DEFAULT_EMPTY_QUERY, clazz);
     }
 
-    
-    public KillBillHttpClient getKillBillHttpClient() {
-        return killBillHttpClient;
-    }
 
-    
-    public void setKillBillHttpClient(KillBillHttpClient killBillHttpClient) {
-        this.killBillHttpClient = killBillHttpClient;
     }
-
-    
-    public int getPaginationCurrentOffset() {
-        return paginationCurrentOffset;
-    }
-
-    
-    public void setPaginationCurrentOffset(int paginationCurrentOffset) {
-        this.paginationCurrentOffset = paginationCurrentOffset;
-    }
-
-    
-    public int getPaginationNextOffset() {
-        return paginationNextOffset;
-    }
-
-    
-    public void setPaginationNextOffset(int paginationNextOffset) {
-        this.paginationNextOffset = paginationNextOffset;
-    }
-
-    
-    public int getPaginationTotalNbRecords() {
-        return paginationTotalNbRecords;
-    }
-
-    
-    public void setPaginationTotalNbRecords(int paginationTotalNbRecords) {
-        this.paginationTotalNbRecords = paginationTotalNbRecords;
-    }
-
-    
-    public int getPaginationMaxNbRecords() {
-        return paginationMaxNbRecords;
-    }
-
-    
-    public void setPaginationMaxNbRecords(int paginationMaxNbRecords) {
-        this.paginationMaxNbRecords = paginationMaxNbRecords;
-    }
-
-    
-    public string getPaginationNextPageUri() {
-        return paginationNextPageUri;
-    }
-
-    
-    public void setPaginationNextPageUri(string paginationNextPageUri) {
-        this.paginationNextPageUri = paginationNextPageUri;
-    }
+   
 }

@@ -13,7 +13,7 @@ namespace Killbill_Client.model {
         private ProductCategory productCategory;
         private BillingPeriod billingPeriod;
         private string priceListName;
-        private LocalDate effectiveDate;
+        private DateTime effectiveDate;
         private Guid subscriptionId;
         private Guid bundleId;
         private BillingActionPolicy billingPolicy;

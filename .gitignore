@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+model-j/
+Killbill-Client/model2/AccountEmail.cs
+Killbill-Client/model2/

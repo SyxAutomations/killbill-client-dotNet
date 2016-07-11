@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Util;
+using SharpDash;
 
 namespace JavaTransformer
 {
@@ -49,7 +49,8 @@ namespace JavaTransformer
 
         private static string[] Transform(string[] contents)
         {
-            return changeIntegerToInt64(
+            return changeExtendToColon(
+                changeIntegerToInt64(
                 lowercaseString(
                     capitalizeAppend(
                         changeHashCodeToGetHashCode(
@@ -58,9 +59,9 @@ namespace JavaTransformer
                                     removeFinal(
                                         PackageToNamespace(
                                             removeImports(
-                                                removeOverride(
+                                                removeAnnotations(
                                                     changeToString(
-                                                        contents.AsEnumerable()))))))))))).ToArray();
+                                                        contents.AsEnumerable())))))))))))).ToArray();
         }
 
         private static IEnumerable<string> changeToString(IEnumerable<string> lines)
@@ -70,7 +71,7 @@ namespace JavaTransformer
 
         private static IEnumerable<string> removeOverride(IEnumerable<string> lines)
         {
-            return lines.Select(line => line.Contains("@Override ") ? "" : line);
+            return lines.Select(line => line.Contains("@Override") ? "" : line);
         }
 
         private static IEnumerable<string> removeImports(IEnumerable<string> lines)
@@ -121,9 +122,18 @@ namespace JavaTransformer
             return x.Select(line => line.Replace("(Integer ", "(Int64 ", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static IEnumerable<string> removeJsonCreator(IEnumerable<string> lines)
+        private static IEnumerable<string> removeAnnotations(IEnumerable<string> lines)
         {
-            return lines.Select(line => line.Replace("@JsonCreator", ""));
+            var x = lines.Select(line => line.Replace("@JsonCreator", ""));
+            x = x.Select(line => line.Replace("@JsonIgnore", ""));
+            x = x.Select(line => line.Replace("@Override", ""));
+            x = x.Select(line => line.Replace(" super(", ""));
+            return x;
+        }
+
+        private static IEnumerable<string> changeExtendToColon(IEnumerable<string> lines)
+        {
+            return lines.Select(line => line.Replace(" extends ", " : "));
         }
     }
 }

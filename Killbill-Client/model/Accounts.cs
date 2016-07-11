@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Killbill_Client.model
 {
-    class Accounts
+    public class Accounts
     {
     }
 }

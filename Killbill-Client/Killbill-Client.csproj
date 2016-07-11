@@ -30,8 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="DataStructures\MultiMap.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="KillBillClient.cs" />
     <Compile Include="KillBillClientException.cs" />
     <Compile Include="KillBillHttpClient.cs" />
@@ -52,7 +65,9 @@
     <Compile Include="model\AuditLog.cs" />
     <Compile Include="model\BillingException.cs" />
     <Compile Include="model\BlockingState.cs" />
+    <Compile Include="model\Bundle.cs" />
     <Compile Include="model\Bundles.cs" />
+    <Compile Include="model\BundleTimeline.cs" />
     <Compile Include="model\Catalog.cs" />
     <Compile Include="model\ComboHostedPaymentPage.cs" />
     <Compile Include="model\ComboPayment.cs" />
@@ -109,8 +124,11 @@
     <Compile Include="model\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestOptions.cs" />
+    <Compile Include="RequestOptionsBuilder.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,121 +3,148 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 
-namespace Killbill_Client.model {
-public class Credit : KillBillObject {
+namespace Killbill_Client.model
+{
+    public class Credit : KillBillObject
+    {
 
-    private BigInteger creditAmount;
-    private Guid invoiceId;
-    private string invoiceNumber;
-    private DateTime effectiveDate;
-    private Guid accountId;
+        private BigInteger creditAmount;
+        private Guid invoiceId;
+        private string invoiceNumber;
+        private DateTime effectiveDate;
+        private Guid accountId;
 
-    public Credit() {}
+        public Credit()
+        {
+        }
 
-    
-    public Credit(BigInteger creditAmount,
-                    Guid invoiceId,
-                    string invoiceNumber,
-                    DateTime effectiveDate,
-                    Guid accountId,
-                    List<AuditLog> auditLogs) {
-       auditLogs);
-        this.creditAmount = creditAmount;
-        this.invoiceId = invoiceId;
-        this.invoiceNumber = invoiceNumber;
-        this.effectiveDate = effectiveDate;
-        this.accountId = accountId;
-    }
 
-    public BigDecimal getCreditAmount() {
-        return creditAmount;
-    }
+        public Credit(BigInteger creditAmount,
+            Guid invoiceId,
+            string invoiceNumber,
+            DateTime effectiveDate,
+            Guid accountId,
+            List<AuditLog> auditLogs)
+        {
+            this.creditAmount = creditAmount;
+            this.invoiceId = invoiceId;
+            this.invoiceNumber = invoiceNumber;
+            this.effectiveDate = effectiveDate;
+            this.accountId = accountId;
+        }
 
-    public void setCreditAmount(BigDecimal creditAmount) {
-        this.creditAmount = creditAmount;
-    }
+        public BigInteger getCreditAmount()
+        {
+            return creditAmount;
+        }
 
-    public Guid getInvoiceId() {
-        return invoiceId;
-    }
+        public void setCreditAmount(BigInteger creditAmount)
+        {
+            this.creditAmount = creditAmount;
+        }
 
-    public void setInvoiceId(Guid invoiceId) {
-        this.invoiceId = invoiceId;
-    }
+        public Guid getInvoiceId()
+        {
+            return invoiceId;
+        }
 
-    public string getInvoiceNumber() {
-        return invoiceNumber;
-    }
+        public void setInvoiceId(Guid invoiceId)
+        {
+            this.invoiceId = invoiceId;
+        }
 
-    public void setInvoiceNumber(string invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
+        public string getInvoiceNumber()
+        {
+            return invoiceNumber;
+        }
 
-    public LocalDate getEffectiveDate() {
-        return effectiveDate;
-    }
+        public void setInvoiceNumber(string invoiceNumber)
+        {
+            this.invoiceNumber = invoiceNumber;
+        }
 
-    public void setEffectiveDate(LocalDate effectiveDate) {
-        this.effectiveDate = effectiveDate;
-    }
+        public DateTime getEffectiveDate()
+        {
+            return effectiveDate;
+        }
 
-    public Guid getAccountId() {
-        return accountId;
-    }
+        public void setEffectiveDate(DateTime effectiveDate)
+        {
+            this.effectiveDate = effectiveDate;
+        }
 
-    public void setAccountId(Guid accountId) {
-        this.accountId = accountId;
-    }
+        public Guid getAccountId()
+        {
+            return accountId;
+        }
 
-    
-    public string ToString() {
-        StringBuilder sb = new StringBuilder("Credit{");
-        sb.Append("creditAmount=").append(creditAmount);
-        sb.Append(", invoiceId='").append(invoiceId).append('\'');
-        sb.Append(", invoiceNumber='").append(invoiceNumber).append('\'');
-        sb.Append(", effectiveDate=").append(effectiveDate);
-        sb.Append(", accountId='").append(accountId).append('\'');
-        sb.Append('}');
-        return sb.ToString();
-    }
+        public void setAccountId(Guid accountId)
+        {
+            this.accountId = accountId;
+        }
 
-    
-    public bool equals(Object o) {
-        if (this == o) {
+
+        public string ToString()
+        {
+            StringBuilder sb = new StringBuilder("Credit{");
+            sb.Append("creditAmount=").Append(creditAmount);
+            sb.Append(", invoiceId='").Append(invoiceId).Append('\'');
+            sb.Append(", invoiceNumber='").Append(invoiceNumber).Append('\'');
+            sb.Append(", effectiveDate=").Append(effectiveDate);
+            sb.Append(", accountId='").Append(accountId).Append('\'');
+            sb.Append('}');
+            return sb.ToString();
+        }
+
+
+        public bool Equals(Object o)
+        {
+            if (this == o)
+            {
+                return true;
+            }
+            if (o == null || GetType() != o.GetType())
+            {
+                return false;
+            }
+
+            Credit credit = (Credit)o;
+
+            if (accountId != null ? !accountId.Equals(credit.accountId) : credit.accountId != null)
+            {
+                return false;
+            }
+            if (creditAmount != null ? creditAmount.CompareTo(credit.creditAmount) != 0 : credit.creditAmount != null)
+            {
+                return false;
+            }
+            if (effectiveDate != null
+                ? effectiveDate.CompareTo(credit.effectiveDate) != 0
+                : credit.effectiveDate != null)
+            {
+                return false;
+            }
+            if (invoiceId != null ? !invoiceId.Equals(credit.invoiceId) : credit.invoiceId != null)
+            {
+                return false;
+            }
+            if (invoiceNumber != null ? !invoiceNumber.Equals(credit.invoiceNumber) : credit.invoiceNumber != null)
+            {
+                return false;
+            }
+
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
 
-        Credit credit = (Credit) o;
 
-        if (accountId != null ? !accountId.equals(credit.accountId) : credit.accountId != null) {
-            return false;
+        public int GetHashCode()
+        {
+            int result = creditAmount != null ? creditAmount.GetHashCode() : 0;
+            result = 31 * result + (invoiceId != null ? invoiceId.GetHashCode() : 0);
+            result = 31 * result + (invoiceNumber != null ? invoiceNumber.GetHashCode() : 0);
+            result = 31 * result + (effectiveDate != null ? effectiveDate.GetHashCode() : 0);
+            result = 31 * result + (accountId != null ? accountId.GetHashCode() : 0);
+            return result;
         }
-        if (creditAmount != null ? creditAmount.compareTo(credit.creditAmount) != 0 : credit.creditAmount != null) {
-            return false;
-        }
-        if (effectiveDate != null ? effectiveDate.compareTo(credit.effectiveDate) != 0 : credit.effectiveDate != null) {
-            return false;
-        }
-        if (invoiceId != null ? !invoiceId.equals(credit.invoiceId) : credit.invoiceId != null) {
-            return false;
-        }
-        if (invoiceNumber != null ? !invoiceNumber.equals(credit.invoiceNumber) : credit.invoiceNumber != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    
-    public int GetHashCode() {
-        int result = creditAmount != null ? creditAmount.GetHashCode() : 0;
-        result = 31 * result + (invoiceId != null ? invoiceId.GetHashCode() : 0);
-        result = 31 * result + (invoiceNumber != null ? invoiceNumber.GetHashCode() : 0);
-        result = 31 * result + (effectiveDate != null ? effectiveDate.GetHashCode() : 0);
-        result = 31 * result + (accountId != null ? accountId.GetHashCode() : 0);
-        return result;
     }
 }

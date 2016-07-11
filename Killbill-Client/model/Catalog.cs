@@ -5,14 +5,6 @@ using System.Text;
 
 namespace Killbill_Client.model {
 
-
-
-
-
-
-
-
-
     public class Catalog : KillBillObject
     {
 
@@ -122,7 +114,7 @@ namespace Killbill_Client.model {
                 return false;
             }
             if (effectiveDate != null
-                ? effectiveDate.compareTo(catalog.effectiveDate) != 0
+                ? effectiveDate.CompareTo(catalog.effectiveDate) != 0
                 : catalog.effectiveDate != null)
             {
                 return false;

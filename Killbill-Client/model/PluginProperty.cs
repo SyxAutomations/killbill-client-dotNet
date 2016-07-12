@@ -1,20 +1,14 @@
 
 using System;
 using System.Text;
-
 namespace Killbill_Client.model
 {
     public class PluginProperty
     {
-
         private string key;
         private string value;
         private bool isUpdatable;
-
-        public PluginProperty()
-        {
-        }
-
+        
         public string ToString()
         {
             StringBuilder sb = new StringBuilder("PaymentMethodProperties{");

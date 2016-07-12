@@ -4,7 +4,7 @@ namespace Killbill_Client.model
     {
         public Tags getNext()
         {
-            return getNext(Tags.class)
+            return getNext<Tags>(typeof(Tags));
             ;
         }
     }

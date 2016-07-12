@@ -72,11 +72,14 @@
     <Compile Include="model\AccountTimeline.cs" />
     <Compile Include="model\AuditLog.cs" />
     <Compile Include="model\BillingException.cs" />
+    <Compile Include="model\BillingPeriod.cs" />
     <Compile Include="model\BlockingState.cs" />
+    <Compile Include="model\BlockingStateType.cs" />
     <Compile Include="model\Bundle.cs" />
     <Compile Include="model\Bundles.cs" />
     <Compile Include="model\BundleTimeline.cs" />
     <Compile Include="model\Catalog.cs" />
+    <Compile Include="model\ObjectType.cs" />
     <Compile Include="model\ComboHostedPaymentPage.cs" />
     <Compile Include="model\ComboPayment.cs" />
     <Compile Include="model\ComboPaymentTransaction.cs" />

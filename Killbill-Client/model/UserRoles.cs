@@ -7,7 +7,6 @@ namespace Killbill_Client.model
 
     public class UserRoles
     {
-
         private string username;
         private string password;
         private List<String> roles;

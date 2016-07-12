@@ -14,26 +14,26 @@ namespace Killbill_Client
     {
         private readonly KillBillHttpClient httpClient;
 
-    public KillBillClient() : this(new KillBillHttpClient())
+        public KillBillClient() : this(new KillBillHttpClient())
         {
         }
 
-        public KillBillClient(KillBillHttpClient httpClient)  
+        public KillBillClient(KillBillHttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
-        
 
-        
-    public void close()
-    {
-        httpClient.close();
-    }
+
+
+        public void close()
+        {
+            httpClient.close();
+        }
 
         // Accounts
 
 
-        public Accounts getAccounts(RequestOptions inputOptions) 
+        public Accounts getAccounts(RequestOptions inputOptions)
         {
             return getAccounts(0L, 100L, inputOptions);
         }
@@ -42,33 +42,33 @@ namespace Killbill_Client
         {
             return getAccounts(offset, limit, AuditLevel.None, inputOptions);
         }
-        
+
 
         public Accounts getAccounts(long offset, long limit, AuditLevel auditLevel, RequestOptions inputOptions)
         {
             String uri = Config.ACCOUNTS_PATH + "/" + Config.PAGINATION;
 
-            Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+            Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
             queryParams.Add(Config.QUERY_SEARCH_OFFSET, offset.ToString());
             queryParams.Add(Config.QUERY_SEARCH_LIMIT, limit.ToString());
             queryParams.Add(Config.QUERY_AUDIT, auditLevel.ToString());
 
-            
+
             RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Accounts.class, requestOptions);
+            return httpClient.doGet(uri, Accounts.class, requestOptions);
     }
 
-    public Account getAccount(Guid accountId, RequestOptions inputOptions) 
+    public Account getAccount(Guid accountId, RequestOptions inputOptions)
     {
         return getAccount(accountId, false, false, inputOptions);
     }
 
-    public Account getAccount(Guid accountId, bool withBalance, bool withCBA, RequestOptions inputOptions) 
+    public Account getAccount(Guid accountId, bool withBalance, bool withCBA, RequestOptions inputOptions)
     {
         String uri = Config.ACCOUNTS_PATH + "/" + accountId;
 
-        Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+        Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
         queryParams.Add(Config.QUERY_ACCOUNT_WITH_BALANCE, withBalance ? "true" : "false");
         queryParams.Add(Config.QUERY_ACCOUNT_WITH_BALANCE_AND_CBA, withCBA ? "true" : "false");
 
@@ -79,86 +79,86 @@ namespace Killbill_Client
 
 public Account getAccount(String externalKey, RequestOptions inputOptions)
 {
-        return getAccount(externalKey, false, false, inputOptions);
+    return getAccount(externalKey, false, false, inputOptions);
 }
 
-public Account getAccount(String externalKey, bool withBalance, bool withCBA, RequestOptions inputOptions) 
+public Account getAccount(String externalKey, bool withBalance, bool withCBA, RequestOptions inputOptions)
 {
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_EXTERNAL_KEY, externalKey);
     queryParams.Add(Config.QUERY_ACCOUNT_WITH_BALANCE, withBalance ? "true" : "false");
     queryParams.Add(Config.QUERY_ACCOUNT_WITH_BALANCE_AND_CBA, withCBA ? "true" : "false");
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(Config.ACCOUNTS_PATH, Account.class, requestOptions);
+    return httpClient.doGet(Config.ACCOUNTS_PATH, Account.class, requestOptions);
     }
 
 public Accounts searchAccounts(String key, RequestOptions inputOptions)
 {
-        return searchAccounts(key, 0L, 100L, inputOptions);
+    return searchAccounts(key, 0L, 100L, inputOptions);
 }
 
-public Accounts searchAccounts(String key, long offset, long limit, RequestOptions inputOptions) 
+public Accounts searchAccounts(String key, long offset, long limit, RequestOptions inputOptions)
 {
-        return searchAccounts(key, offset, limit, AuditLevel.None, RequestOptions.empty());
+    return searchAccounts(key, offset, limit, AuditLevel.None, RequestOptions.empty());
 }
 
-public Accounts searchAccounts(String key, long offset, long limit, AuditLevel auditLevel, RequestOptions inputOptions) 
+public Accounts searchAccounts(String key, long offset, long limit, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Accounts.class, requestOptions);
+    return httpClient.doGet(uri, Accounts.class, requestOptions);
     }
 
 public AccountTimeline getAccountTimeline(Guid accountId, RequestOptions inputOptions)
 {
-        return getAccountTimeline(accountId, AuditLevel.NONE, inputOptions);
+    return getAccountTimeline(accountId, AuditLevel.NONE, inputOptions);
 }
 
 
-public AccountTimeline getAccountTimeline(Guid accountId, AuditLevel auditLevel, RequestOptions inputOptions) 
+public AccountTimeline getAccountTimeline(Guid accountId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.TIMELINE;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, AccountTimeline.class, requestOptions);
+    return httpClient.doGet(uri, AccountTimeline.class, requestOptions);
     }
 
-public Account createAccount(Account account, RequestOptions inputOptions) 
+public Account createAccount(Account account, RequestOptions inputOptions)
 {
     bool followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), true);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
-        return httpClient.doPost(Config.ACCOUNTS_PATH, account, Account.class, requestOptions);
+    return httpClient.doPost(Config.ACCOUNTS_PATH, account, Account.class, requestOptions);
     }
 
 
 
-public Account updateAccount(Account account, RequestOptions inputOptions) 
+public Account updateAccount(Account account, RequestOptions inputOptions)
 {
     Preconditions.checkNotNull(account.getAccountId(), "Account#accountId cannot be null");
 
     String uri = Config.ACCOUNTS_PATH + "/" + account.getAccountId();
 
-        return httpClient.doPut(uri, account, Account.class, inputOptions);
+    return httpClient.doPut(uri, account, Account.class, inputOptions);
     }
 
-public AccountEmails getEmailsForAccount(Guid accountId, RequestOptions inputOptions) 
+public AccountEmails getEmailsForAccount(Guid accountId, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.EMAILS;
 
-        return httpClient.doGet(uri, AccountEmails.class, inputOptions);
+    return httpClient.doGet(uri, AccountEmails.class, inputOptions);
     }
     
 
@@ -172,7 +172,7 @@ public void addEmailToAccount(AccountEmail email, RequestOptions inputOptions)
 }
 
 
-public void removeEmailFromAccount(AccountEmail email, RequestOptions inputOptions) 
+public void removeEmailFromAccount(AccountEmail email, RequestOptions inputOptions)
 {
     Preconditions.checkNotNull(email.getAccountId(), "AccountEmail#accountId cannot be null");
     Preconditions.checkNotNull(email.getEmail(), "AccountEmail#email cannot be null");
@@ -183,15 +183,15 @@ public void removeEmailFromAccount(AccountEmail email, RequestOptions inputOptio
 }
 
 
-public InvoiceEmail getEmailNotificationsForAccount(Guid accountId, RequestOptions inputOptions) 
+public InvoiceEmail getEmailNotificationsForAccount(Guid accountId, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.EMAIL_NOTIFICATIONS;
 
-        return httpClient.doGet(uri, InvoiceEmail.class, inputOptions);
+    return httpClient.doGet(uri, InvoiceEmail.class, inputOptions);
     }
 
 
-public void updateEmailNotificationsForAccount(InvoiceEmail invoiceEmail, RequestOptions inputOptions) 
+public void updateEmailNotificationsForAccount(InvoiceEmail invoiceEmail, RequestOptions inputOptions)
 {
     Preconditions.checkNotNull(invoiceEmail.getAccountId(), "InvoiceEmail#accountId cannot be null");
 
@@ -203,11 +203,11 @@ public void updateEmailNotificationsForAccount(InvoiceEmail invoiceEmail, Reques
 // Bundles
 
 
-public Bundle getBundle(Guid bundleId, RequestOptions inputOptions) 
+public Bundle getBundle(Guid bundleId, RequestOptions inputOptions)
 {
     String uri = Config.BUNDLES_PATH + "/" + bundleId;
 
-        return httpClient.doGet(uri, Bundle.class, inputOptions);
+    return httpClient.doGet(uri, Bundle.class, inputOptions);
     }
     
 public Bundle getBundle(String externalKey, RequestOptions inputOptions)
@@ -219,7 +219,7 @@ public Bundle getBundle(String externalKey, RequestOptions inputOptions)
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Bundle.class, requestOptions);
+    return httpClient.doGet(uri, Bundle.class, requestOptions);
     }
 
 
@@ -227,7 +227,7 @@ public Bundles getAccountBundles(Guid accountId, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.BUNDLES;
 
-        return httpClient.doGet(uri, Bundles.class, inputOptions);
+    return httpClient.doGet(uri, Bundles.class, inputOptions);
     }
 
 public Bundles getAccountBundles(Guid accountId, String externalKey, RequestOptions inputOptions)
@@ -239,21 +239,21 @@ public Bundles getAccountBundles(Guid accountId, String externalKey, RequestOpti
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Bundles.class, requestOptions);
+    return httpClient.doGet(uri, Bundles.class, requestOptions);
     }
 
 
 
 public Bundles getBundles(RequestOptions inputOptions)
 {
-        return getBundles(0L, 100L, inputOptions);
+    return getBundles(0L, 100L, inputOptions);
 }
 
 
 
 public Bundles getBundles(long offset, long limit, RequestOptions inputOptions)
 {
-        return getBundles(offset, limit, AuditLevel.NONE, inputOptions);
+    return getBundles(offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -262,28 +262,28 @@ public Bundles getBundles(long offset, long limit, AuditLevel auditLevel, Reques
 {
     String uri = Config.BUNDLES_PATH + "/" + Config.PAGINATION;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Bundles.class, requestOptions);
+    return httpClient.doGet(uri, Bundles.class, requestOptions);
     }
 
 
 
 public Bundles searchBundles(String key, RequestOptions inputOptions)
 {
-        return searchBundles(key, 0L, 100L, inputOptions);
+    return searchBundles(key, 0L, 100L, inputOptions);
 }
 
 
 
 public Bundles searchBundles(String key, long offset, long limit, RequestOptions inputOptions)
 {
-        return searchBundles(key, offset, limit, AuditLevel.NONE, inputOptions);
+    return searchBundles(key, offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -292,14 +292,14 @@ public Bundles searchBundles(String key, long offset, long limit, AuditLevel aud
 {
     String uri = Config.BUNDLES_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Bundles.class, requestOptions);
+    return httpClient.doGet(uri, Bundles.class, requestOptions);
     }
 
 
@@ -314,7 +314,7 @@ public Bundle transferBundle(Bundle bundle, RequestOptions inputOptions)
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPut(uri, bundle, Bundle.class, requestOptions);
+    return httpClient.doPut(uri, bundle, Bundle.class, requestOptions);
     }
 
  
@@ -338,20 +338,20 @@ public Subscription getSubscription(Guid subscriptionId, RequestOptions inputOpt
 {
     String uri = Config.SUBSCRIPTIONS_PATH + "/" + subscriptionId;
 
-        return httpClient.doGet(uri, Subscription.class, inputOptions);
+    return httpClient.doGet(uri, Subscription.class, inputOptions);
     }
 
 
 
 public Subscription createSubscription(Subscription subscription, RequestOptions inputOptions)
 {
-        return createSubscription(subscription, -1, inputOptions);
+    return createSubscription(subscription, -1, inputOptions);
 }
 
 
 public Subscription createSubscription(Subscription subscription, int timeoutSec, RequestOptions inputOptions)
 {
-        return createSubscription(subscription, null, timeoutSec, inputOptions);
+    return createSubscription(subscription, null, timeoutSec, inputOptions);
 }
 
 
@@ -362,14 +362,16 @@ public Subscription createSubscription(Subscription subscription, DateTime reque
     Preconditions.checkNotNull(subscription.getProductCategory(), "Subscription#productCategory cannot be null");
     Preconditions.checkNotNull(subscription.getBillingPeriod(), "Subscription#billingPeriod cannot be null");
     Preconditions.checkNotNull(subscription.getPriceList(), "Subscription#priceList cannot be null");
-        if (subscription.getProductCategory() == ProductCategory.BASE) {
+    if (subscription.getProductCategory() == ProductCategory.BASE)
+    {
         Preconditions.checkNotNull(subscription.getAccountId(), "Account#accountId cannot be null");
     }
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_CALL_COMPLETION, timeoutSec > 0 ? "true" : "false");
     queryParams.Add(Config.QUERY_CALL_TIMEOUT, String.valueOf(timeoutSec));
-        if (requestedDate != null) {
+    if (requestedDate != null)
+    {
         queryParams.Add(Config.QUERY_REQUESTED_DT, requestedDate.toDateTimeISO().toString());
     }
 
@@ -378,13 +380,14 @@ public Subscription createSubscription(Subscription subscription, DateTime reque
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(Config.SUBSCRIPTIONS_PATH, subscription, Subscription.class, requestOptions, httpTimeout);
+    return httpClient.doPost(Config.SUBSCRIPTIONS_PATH, subscription, Subscription.class, requestOptions, httpTimeout);
     }
 
 
 public Bundle createSubscriptionWithAddOns(Iterable<Subscription> subscriptions, DateTime requestedDate, int timeoutSec, RequestOptions inputOptions)
 {
-        for (Subscription subscription : subscriptions) {
+    for (Subscription subscription : subscriptions)
+    {
         Preconditions.checkNotNull(subscription.getProductName(), "Subscription#productName cannot be null");
         Preconditions.checkNotNull(subscription.getProductCategory(), "Subscription#productCategory cannot be null");
         Preconditions.checkNotNull(subscription.getBillingPeriod(), "Subscription#billingPeriod cannot be null");
@@ -395,10 +398,11 @@ public Bundle createSubscriptionWithAddOns(Iterable<Subscription> subscriptions,
         }
     }
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_CALL_COMPLETION, timeoutSec > 0 ? "true" : "false");
     queryParams.Add(Config.QUERY_CALL_TIMEOUT, String.valueOf(timeoutSec));
-        if (requestedDate != null) {
+    if (requestedDate != null)
+    {
         queryParams.Add(Config.QUERY_REQUESTED_DT, requestedDate.toDateTimeISO().toString());
     }
 
@@ -409,20 +413,20 @@ public Bundle createSubscriptionWithAddOns(Iterable<Subscription> subscriptions,
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, subscriptions, Bundle.class, requestOptions, httpTimeout);
+    return httpClient.doPost(uri, subscriptions, Bundle.class, requestOptions, httpTimeout);
     }
 
    
 
 public Subscription updateSubscription(Subscription subscription, int timeoutSec, RequestOptions inputOptions)
 {
-        return updateSubscription(subscription, null, timeoutSec, inputOptions);
+    return updateSubscription(subscription, null, timeoutSec, inputOptions);
 }
 
 
 public Subscription updateSubscription(Subscription subscription, @Nullable BillingActionPolicy billingPolicy, int timeoutSec, RequestOptions inputOptions)
 {
-        return updateSubscription(subscription, null, billingPolicy, timeoutSec, inputOptions);
+    return updateSubscription(subscription, null, billingPolicy, timeoutSec, inputOptions);
 }
 
 
@@ -436,19 +440,21 @@ public Subscription updateSubscription(Subscription subscription, @Nullable Date
 
     String uri = Config.SUBSCRIPTIONS_PATH + "/" + subscription.getSubscriptionId();
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_CALL_COMPLETION, timeoutSec > 0 ? "true" : "false");
     queryParams.Add(Config.QUERY_CALL_TIMEOUT, String.valueOf(timeoutSec));
-        if (requestedDate != null) {
+    if (requestedDate != null)
+    {
         queryParams.Add(Config.QUERY_REQUESTED_DT, requestedDate.toDateTimeISO().toString());
     }
-        if (billingPolicy != null) {
+    if (billingPolicy != null)
+    {
         queryParams.Add(Config.QUERY_BILLING_POLICY, billingPolicy.toString());
     }
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doPut(uri, subscription, Subscription.class, inputOptions);
+    return httpClient.doPut(uri, subscription, Subscription.class, inputOptions);
     }
 
    
@@ -485,19 +491,23 @@ public void cancelSubscription(Guid subscriptionId, @Nullable DateTime requested
 {
     String uri = Config.SUBSCRIPTIONS_PATH + "/" + subscriptionId;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_CALL_COMPLETION, timeoutSec > 0 ? "true" : "false");
     queryParams.Add(Config.QUERY_CALL_TIMEOUT, String.valueOf(timeoutSec));
-        if (requestedDate != null) {
+    if (requestedDate != null)
+    {
         queryParams.Add(Config.QUERY_REQUESTED_DT, requestedDate.toDateTimeISO().toString());
     }
-        if (entitlementPolicy != null) {
+    if (entitlementPolicy != null)
+    {
         queryParams.Add(Config.QUERY_ENTITLEMENT_POLICY, entitlementPolicy.toString());
     }
-        if (billingPolicy != null) {
+    if (billingPolicy != null)
+    {
         queryParams.Add(Config.QUERY_BILLING_POLICY, billingPolicy.toString());
     }
-        if (useRequestedDateForBilling != null) {
+    if (useRequestedDateForBilling != null)
+    {
         queryParams.Add(Config.QUERY_USE_REQUESTED_DATE_FOR_BILLING, useRequestedDateForBilling.toString());
     }
 
@@ -534,17 +544,18 @@ public RolledUpUsage getRolledUpUsage(Guid subscriptionId, @Nullable String unit
 {
     String uri = Config.USAGES_PATH + "/" + subscriptionId;
 
-        if (unitType != null && !unitType.trim().isEmpty()) {
+    if (unitType != null && !unitType.trim().isEmpty())
+    {
         uri = uri.concat("/").concat(unitType);
     }
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_START_DATE, startDate.toString());
     queryParams.Add(Config.QUERY_END_DATE, endDate.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, RolledUpUsage.class, requestOptions);
+    return httpClient.doGet(uri, RolledUpUsage.class, requestOptions);
     }
 
     // Invoices
@@ -552,19 +563,19 @@ public RolledUpUsage getRolledUpUsage(Guid subscriptionId, @Nullable String unit
    
 public Invoices getInvoices(RequestOptions inputOptions)
 {
-        return getInvoices(0L, 100L, inputOptions);
+    return getInvoices(0L, 100L, inputOptions);
 }
 
 
 public Invoices getInvoices(long offset, long limit, RequestOptions inputOptions)
 {
-        return getInvoices(true, offset, limit, AuditLevel.NONE, inputOptions);
+    return getInvoices(true, offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
 public Invoices getInvoices(long offset, long limit, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getInvoices(true, offset, limit, auditLevel, inputOptions);
+    return getInvoices(true, offset, limit, auditLevel, inputOptions);
 }
 
 
@@ -572,7 +583,7 @@ public Invoices getInvoices(bool withItems, long offset, long limit, AuditLevel 
 {
     String uri = Config.INVOICES_PATH + "/" + Config.PAGINATION;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_INVOICE_WITH_ITEMS, String.valueOf(withItems));
@@ -580,80 +591,80 @@ public Invoices getInvoices(bool withItems, long offset, long limit, AuditLevel 
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Invoices.class, requestOptions);
+    return httpClient.doGet(uri, Invoices.class, requestOptions);
     }
 
 
 public Invoice getInvoice(Guid invoiceId, RequestOptions inputOptions)
 {
-        return getInvoice(invoiceId, true, inputOptions);
+    return getInvoice(invoiceId, true, inputOptions);
 }
 
 
 public Invoice getInvoice(Guid invoiceId, bool withItems, RequestOptions inputOptions)
 {
-        return getInvoice(invoiceId, withItems, AuditLevel.NONE, inputOptions);
+    return getInvoice(invoiceId, withItems, AuditLevel.NONE, inputOptions);
 }
 
 
 public Invoice getInvoice(Guid invoiceId, bool withItems, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getInvoiceByIdOrNumber(invoiceId.toString(), withItems, auditLevel, inputOptions);
+    return getInvoiceByIdOrNumber(invoiceId.toString(), withItems, auditLevel, inputOptions);
 }
 
 
 public Invoice getInvoice(Integer invoiceNumber, RequestOptions inputOptions)
 {
-        return getInvoice(invoiceNumber, true, inputOptions);
+    return getInvoice(invoiceNumber, true, inputOptions);
 }
 
 
 public Invoice getInvoice(Integer invoiceNumber, bool withItems, RequestOptions inputOptions)
 {
-        return getInvoice(invoiceNumber, withItems, AuditLevel.NONE, inputOptions);
+    return getInvoice(invoiceNumber, withItems, AuditLevel.NONE, inputOptions);
 }
 
 public Invoice getInvoice(Integer invoiceNumber, bool withItems, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getInvoiceByIdOrNumber(invoiceNumber.toString(), withItems, auditLevel, inputOptions);
+    return getInvoiceByIdOrNumber(invoiceNumber.toString(), withItems, auditLevel, inputOptions);
 }
 
 public Invoice getInvoiceByIdOrNumber(String invoiceIdOrNumber, bool withItems, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.INVOICES_PATH + "/" + invoiceIdOrNumber;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_INVOICE_WITH_ITEMS, String.valueOf(withItems));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Invoice.class, requestOptions);
+    return httpClient.doGet(uri, Invoice.class, requestOptions);
     }
 
    
 public String getInvoiceAsHtml(Guid invoiceId, RequestOptions inputOptions)
 {
     String uri = Config.INVOICES_PATH + "/" + invoiceId + "/" + Config.INVOICE_HTML;
-        return getResourceFile(uri, KillBillHttpClient.ACCEPT_HTML, inputOptions);
+    return getResourceFile(uri, KillBillHttpClient.ACCEPT_HTML, inputOptions);
 }
 
 
 public Invoices getInvoicesForAccount(Guid accountId, RequestOptions inputOptions)
 {
-        return getInvoicesForAccount(accountId, true, inputOptions);
+    return getInvoicesForAccount(accountId, true, inputOptions);
 }
 
 
 public Invoices getInvoicesForAccount(Guid accountId, bool withItems, RequestOptions inputOptions)
 {
-        return getInvoicesForAccount(accountId, withItems, false, AuditLevel.NONE, inputOptions);
+    return getInvoicesForAccount(accountId, withItems, false, AuditLevel.NONE, inputOptions);
 }
 
 
 public Invoices getInvoicesForAccount(Guid accountId, bool withItems, bool unpaidOnly, RequestOptions inputOptions)
 {
-        return getInvoicesForAccount(accountId, withItems, unpaidOnly, AuditLevel.NONE, inputOptions);
+    return getInvoicesForAccount(accountId, withItems, unpaidOnly, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -661,40 +672,40 @@ public Invoices getInvoicesForAccount(Guid accountId, bool withItems, bool unpai
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.INVOICES;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_INVOICE_WITH_ITEMS, String.valueOf(withItems));
     queryParams.Add(Config.QUERY_UNPAID_INVOICES_ONLY, String.valueOf(unpaidOnly));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Invoices.class, requestOptions);
+    return httpClient.doGet(uri, Invoices.class, requestOptions);
     }
 
     
 
 public Invoices searchInvoices(String key, RequestOptions inputOptions)
 {
-        return searchInvoices(key, 0L, 100L, inputOptions);
+    return searchInvoices(key, 0L, 100L, inputOptions);
 }
 
 public Invoices searchInvoices(String key, long offset, long limit, RequestOptions inputOptions)
 {
-        return searchInvoices(key, offset, limit, AuditLevel.NONE, inputOptions);
+    return searchInvoices(key, offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 public Invoices searchInvoices(String key, long offset, long limit, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.INVOICES_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Invoices.class, requestOptions);
+    return httpClient.doGet(uri, Invoices.class, requestOptions);
     }
 
   
@@ -703,21 +714,24 @@ public Invoice createDryRunInvoice(Guid accountId, @Nullable LocalDate futureDat
 {
     String uri = Config.INVOICES_PATH + "/" + Config.DRY_RUN;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
 
     String futureDateOrUpcomingNextInvoice = (futureDate != null) ? futureDate.toString() : null;
-        if (futureDateOrUpcomingNextInvoice != null) {
+    if (futureDateOrUpcomingNextInvoice != null)
+    {
         queryParams.Add(Config.QUERY_ACCOUNT_ID, accountId.toString());
         queryParams.Add(Config.QUERY_TARGET_DATE, futureDateOrUpcomingNextInvoice);
         queryParams.Add(Config.QUERY_DRY_RUN, "true");
-    } else {
+    }
+    else
+    {
         queryParams.Add(Config.QUERY_ACCOUNT_ID, accountId.toString());
         queryParams.Add(Config.QUERY_DRY_RUN, "true");
     }
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doPost(uri, dryRunInfo, Invoice.class, requestOptions);
+    return httpClient.doPost(uri, dryRunInfo, Invoice.class, requestOptions);
     }
 
   
@@ -726,23 +740,23 @@ public Invoice createInvoice(Guid accountId, LocalDate futureDate, RequestOption
 {
     String uri = Config.INVOICES_PATH;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_ACCOUNT_ID, accountId.toString());
     queryParams.Add(Config.QUERY_TARGET_DATE, futureDate.toString());
 
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, null, Invoice.class, requestOptions);
+    return httpClient.doPost(uri, null, Invoice.class, requestOptions);
     }
 
    
 public Invoice adjustInvoiceItem(InvoiceItem invoiceItem, RequestOptions inputOptions)
 {
-        return adjustInvoiceItem(invoiceItem, new DateTime(DateTimeZone.UTC), inputOptions);
-    }
+    return adjustInvoiceItem(invoiceItem, new DateTime(DateTimeZone.UTC), inputOptions);
+}
 
-   
+
 
 public Invoice adjustInvoiceItem(InvoiceItem invoiceItem, DateTime requestedDate, RequestOptions inputOptions)
 {
@@ -752,59 +766,62 @@ public Invoice adjustInvoiceItem(InvoiceItem invoiceItem, DateTime requestedDate
 
     String uri = Config.INVOICES_PATH + "/" + invoiceItem.getInvoiceId();
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_REQUESTED_DT, requestedDate.toDateTimeISO().toString());
 
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, invoiceItem, Invoice.class, requestOptions);
+    return httpClient.doPost(uri, invoiceItem, Invoice.class, requestOptions);
     }
 
    
 
 public InvoiceItem createExternalCharge(InvoiceItem externalCharge, DateTime requestedDate, Boolean autoPay, RequestOptions inputOptions)
 {
-    List<InvoiceItem> externalCharges = createExternalCharges(ImmutableList.<InvoiceItem>of(externalCharge), requestedDate, autoPay, inputOptions);
-        return externalCharges.isEmpty() ? null : externalCharges.get(0);
-    }
+    List<InvoiceItem> externalCharges = createExternalCharges(ImmutableList.< InvoiceItem > of(externalCharge), requestedDate, autoPay, inputOptions);
+    return externalCharges.isEmpty() ? null : externalCharges.get(0);
+}
 
-   
+
 public List<InvoiceItem> createExternalCharges(Iterable<InvoiceItem> externalCharges, DateTime requestedDate, Boolean autoPay, RequestOptions inputOptions)
 {
     Map<Guid, Collection<InvoiceItem>> externalChargesPerAccount = new HashMap<Guid, Collection<InvoiceItem>>();
-        for (InvoiceItem externalCharge : externalCharges) {
-            Preconditions.checkNotNull(externalCharge.getAccountId(), "InvoiceItem#accountId cannot be null");
-            Preconditions.checkNotNull(externalCharge.getAmount(), "InvoiceItem#amount cannot be null");
-            // We allow the currency to be null and in this case will default to account currency
-            //Preconditions.checkNotNull(externalCharge.getCurrency(), "InvoiceItem#currency cannot be null");
+    for (InvoiceItem externalCharge : externalCharges)
+    {
+        Preconditions.checkNotNull(externalCharge.getAccountId(), "InvoiceItem#accountId cannot be null");
+        Preconditions.checkNotNull(externalCharge.getAmount(), "InvoiceItem#amount cannot be null");
+        // We allow the currency to be null and in this case will default to account currency
+        //Preconditions.checkNotNull(externalCharge.getCurrency(), "InvoiceItem#currency cannot be null");
 
-            if (externalChargesPerAccount.get(externalCharge.getAccountId()) == null) {
-                externalChargesPerAccount.Add(externalCharge.getAccountId(), new LinkedList<InvoiceItem>());
-            }
-            externalChargesPerAccount.get(externalCharge.getAccountId()).add(externalCharge);
+        if (externalChargesPerAccount.get(externalCharge.getAccountId()) == null)
+        {
+            externalChargesPerAccount.Add(externalCharge.getAccountId(), new LinkedList<InvoiceItem>());
         }
-
-        List<InvoiceItem> createdExternalCharges = new LinkedList<InvoiceItem>();
-        for (Guid accountId : externalChargesPerAccount.keySet()) {
-            List<InvoiceItem> invoiceItems = createExternalCharges(accountId, externalChargesPerAccount.get(accountId), requestedDate, autoPay, inputOptions);
-createdExternalCharges.addAll(invoiceItems);
-        }
-
-        return createdExternalCharges;
+        externalChargesPerAccount.get(externalCharge.getAccountId()).add(externalCharge);
     }
 
-    private List<InvoiceItem> createExternalCharges(Guid accountId, Iterable<InvoiceItem> externalCharges, DateTime requestedDate, Boolean autoPay, RequestOptions inputOptions)
+    List<InvoiceItem> createdExternalCharges = new LinkedList<InvoiceItem>();
+    for (Guid accountId : externalChargesPerAccount.keySet())
+    {
+        List<InvoiceItem> invoiceItems = createExternalCharges(accountId, externalChargesPerAccount.get(accountId), requestedDate, autoPay, inputOptions);
+        createdExternalCharges.addAll(invoiceItems);
+    }
+
+    return createdExternalCharges;
+}
+
+private List<InvoiceItem> createExternalCharges(Guid accountId, Iterable<InvoiceItem> externalCharges, DateTime requestedDate, Boolean autoPay, RequestOptions inputOptions)
 {
     String uri = Config.INVOICES_PATH + "/" + Config.CHARGES + "/" + accountId;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_REQUESTED_DT, requestedDate.toDateTimeISO().toString());
     queryParams.Add(Config.QUERY_PAY_INVOICE, autoPay.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doPost(uri, externalCharges, InvoiceItems.class, requestOptions);
+    return httpClient.doPost(uri, externalCharges, InvoiceItems.class, requestOptions);
     }
 
    
@@ -834,7 +851,7 @@ public void uploadInvoiceTemplate(InputStream invoiceTemplateInputStream, bool m
 public String getInvoiceTemplate(bool manualPay, RequestOptions inputOptions)
 {
     String uri = Config.INVOICES + (manualPay ? "/manualPayTemplate" : "/template");
-        return getResourceFile(uri, "text/html", inputOptions);
+    return getResourceFile(uri, "text/html", inputOptions);
 }
 
 
@@ -854,7 +871,7 @@ public void uploadInvoiceTranslation(InputStream invoiceTranslationInputStream, 
 public String getInvoiceTranslation(String locale, RequestOptions inputOptions)
 {
     String uri = Config.INVOICES + "/translation/" + locale;
-        return getResourceFile(uri, "text/plain", inputOptions);
+    return getResourceFile(uri, "text/plain", inputOptions);
 }
 
 public void uploadCatalogTranslation(String catalogTranslationFilePath, String locale, RequestOptions inputOptions)
@@ -873,26 +890,26 @@ public void uploadCatalogTranslation(InputStream catalogTranslationInputStream, 
 public String getCatalogTranslation(String locale, RequestOptions inputOptions)
 {
     String uri = Config.INVOICES + "/catalogTranslation/" + locale;
-        return getResourceFile(uri, "text/plain", inputOptions);
+    return getResourceFile(uri, "text/plain", inputOptions);
 }
 
 // Credits
 
 public Credit getCredit(Guid creditId, RequestOptions inputOptions)
 {
-        return getCredit(creditId, AuditLevel.NONE, inputOptions);
+    return getCredit(creditId, AuditLevel.NONE, inputOptions);
 }
 
 public Credit getCredit(Guid creditId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.CREDITS_PATH + "/" + creditId;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Credit.class, requestOptions);
+    return httpClient.doGet(uri, Credit.class, requestOptions);
     }
 
   
@@ -904,18 +921,18 @@ public Credit createCredit(Credit credit, RequestOptions inputOptions)
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(Config.CREDITS_PATH, credit, Credit.class, requestOptions);
+    return httpClient.doPost(Config.CREDITS_PATH, credit, Credit.class, requestOptions);
     }
 
    
 public Payments searchPayments(String key, RequestOptions inputOptions)
 {
-        return searchPayments(key, 0L, 100L, inputOptions);
+    return searchPayments(key, 0L, 100L, inputOptions);
 }
 
 public Payments searchPayments(String key, long offset, long limit, RequestOptions inputOptions)
 {
-        return searchPayments(key, offset, limit, AuditLevel.NONE, inputOptions);
+    return searchPayments(key, offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -923,21 +940,21 @@ public Payments searchPayments(String key, long offset, long limit, AuditLevel a
 {
     String uri = Config.PAYMENTS_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Payments.class, requestOptions);
+    return httpClient.doGet(uri, Payments.class, requestOptions);
     }
 
    
 
 public InvoicePayments getInvoicePaymentsForAccount(Guid accountId, RequestOptions inputOptions)
 {
-        return getInvoicePaymentsForAccount(accountId, AuditLevel.NONE, inputOptions);
+    return getInvoicePaymentsForAccount(accountId, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -945,12 +962,12 @@ public InvoicePayments getInvoicePaymentsForAccount(Guid accountId, AuditLevel a
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.INVOICE_PAYMENTS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, InvoicePayments.class, requestOptions);
+    return httpClient.doGet(uri, InvoicePayments.class, requestOptions);
     }
 
   
@@ -959,7 +976,7 @@ public InvoicePayments getInvoicePayment(Guid invoiceId, RequestOptions inputOpt
 {
     String uri = Config.INVOICES_PATH + "/" + invoiceId + "/" + Config.PAYMENTS;
 
-        return httpClient.doGet(uri, InvoicePayments.class, inputOptions);
+    return httpClient.doGet(uri, InvoicePayments.class, inputOptions);
     }
 
   
@@ -968,9 +985,10 @@ public void payAllInvoices(Guid accountId, bool externalPayment, BigDecimal paym
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.INVOICE_PAYMENTS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_PAYMENT_EXTERNAL, String.valueOf(externalPayment));
-        if (paymentAmount != null) {
+    if (paymentAmount != null)
+    {
         queryParams.Add("paymentAmount", String.valueOf(paymentAmount));
     }
 
@@ -988,30 +1006,30 @@ public InvoicePayment createInvoicePayment(InvoicePayment payment, bool isExtern
 
     String uri = Config.INVOICES_PATH + "/" + payment.getTargetInvoiceId() + "/" + Config.PAYMENTS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add("externalPayment", String.valueOf(isExternal));
 
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, payment, InvoicePayment.class, requestOptions);
+    return httpClient.doPost(uri, payment, InvoicePayment.class, requestOptions);
     }
 
    
 public Payments getPayments(RequestOptions inputOptions)
 {
-        return getPayments(0L, 100L, inputOptions);
+    return getPayments(0L, 100L, inputOptions);
 }
 
 public Payments getPayments(long offset, long limit, RequestOptions inputOptions)
 {
-        return getPayments(offset, limit, AuditLevel.NONE, inputOptions);
+    return getPayments(offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
 public Payments getPayments(long offset, long limit, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getPayments(offset, limit, null, ImmutableMap.<String, String>of(), auditLevel, inputOptions);
+    return getPayments(offset, limit, null, ImmutableMap.< String, String > of(), auditLevel, inputOptions);
 }
 
 
@@ -1019,8 +1037,9 @@ public Payments getPayments(long offset, long limit, @Nullable String pluginName
 {
     String uri = Config.PAYMENTS_PATH + "/" + Config.PAGINATION;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
-        if (pluginName != null) {
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
+    if (pluginName != null)
+    {
         queryParams.Add(Config.QUERY_PAYMENT_PLUGIN_NAME, pluginName);
     }
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
@@ -1030,24 +1049,24 @@ public Payments getPayments(long offset, long limit, @Nullable String pluginName
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Payments.class, requestOptions);
+    return httpClient.doGet(uri, Payments.class, requestOptions);
     }
 
    
 
 public Payment getPayment(Guid paymentId, RequestOptions inputOptions)
 {
-        return getPayment(paymentId, true, inputOptions);
+    return getPayment(paymentId, true, inputOptions);
 }
 
 public Payment getPayment(Guid paymentId, bool withPluginInfo, RequestOptions inputOptions)
 {
-        return getPayment(paymentId, withPluginInfo, AuditLevel.NONE, inputOptions);
+    return getPayment(paymentId, withPluginInfo, AuditLevel.NONE, inputOptions);
 }
 
 public Payment getPayment(Guid paymentId, bool withPluginInfo, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getPayment(paymentId, withPluginInfo, ImmutableMap.<String, String>of(), auditLevel, inputOptions);
+    return getPayment(paymentId, withPluginInfo, ImmutableMap.< String, String > of(), auditLevel, inputOptions);
 }
 
 
@@ -1055,36 +1074,36 @@ public Payment getPayment(Guid paymentId, bool withPluginInfo, Map<String, Strin
 {
     String uri = Config.PAYMENTS_PATH + "/" + paymentId;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_WITH_PLUGIN_INFO, String.valueOf(withPluginInfo));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
     storePluginPropertiesAsParams(pluginProperties, queryParams);
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Payment.class, requestOptions);
+    return httpClient.doGet(uri, Payment.class, requestOptions);
     }
 
 public Payment getPaymentByExternalKey(String externalKey, RequestOptions inputOptions)
 {
-        return getPaymentByExternalKey(externalKey, true, inputOptions);
+    return getPaymentByExternalKey(externalKey, true, inputOptions);
 }
 
 public Payment getPaymentByExternalKey(String externalKey, bool withPluginInfo, RequestOptions inputOptions)
 {
-        return getPaymentByExternalKey(externalKey, withPluginInfo, AuditLevel.NONE);
+    return getPaymentByExternalKey(externalKey, withPluginInfo, AuditLevel.NONE);
 }
 
 public Payment getPaymentByExternalKey(String externalKey, bool withPluginInfo, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getPaymentByExternalKey(externalKey, withPluginInfo, ImmutableMap.<String, String>of(), auditLevel, inputOptions);
+    return getPaymentByExternalKey(externalKey, withPluginInfo, ImmutableMap.< String, String > of(), auditLevel, inputOptions);
 }
 
 public Payment getPaymentByExternalKey(String externalKey, bool withPluginInfo, Map<String, String> pluginProperties, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.PAYMENTS_PATH;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_EXTERNAL_KEY, externalKey);
     queryParams.Add(Config.QUERY_WITH_PLUGIN_INFO, String.valueOf(withPluginInfo));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
@@ -1092,30 +1111,30 @@ public Payment getPaymentByExternalKey(String externalKey, bool withPluginInfo, 
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Payment.class, requestOptions);
+    return httpClient.doGet(uri, Payment.class, requestOptions);
     }
 
 public Payments getPaymentsForAccount(Guid accountId, RequestOptions inputOptions)
 {
-        return getPaymentsForAccount(accountId, AuditLevel.NONE, inputOptions);
+    return getPaymentsForAccount(accountId, AuditLevel.NONE, inputOptions);
 }
 
 public Payments getPaymentsForAccount(Guid accountId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.PAYMENTS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Payments.class, requestOptions);
+    return httpClient.doGet(uri, Payments.class, requestOptions);
     }
     
 
 public Payment createPayment(ComboPaymentTransaction comboPaymentTransaction, Map<String, String> pluginProperties, RequestOptions inputOptions)
 {
-        return this.createPayment(comboPaymentTransaction, null, pluginProperties, inputOptions);
+    return this.createPayment(comboPaymentTransaction, null, pluginProperties, inputOptions);
 }
 
 public Payment createPayment(ComboPaymentTransaction comboPaymentTransaction, @Nullable List<String> controlPluginNames, Map<String, String> pluginProperties, RequestOptions inputOptions)
@@ -1123,7 +1142,8 @@ public Payment createPayment(ComboPaymentTransaction comboPaymentTransaction, @N
     String uri = Config.PAYMENTS_PATH + "/" + Config.COMBO;
 
     Multimap<String, String> queryParams = HashMultimap.create(inputOptions.getQueryParams());
-        if (controlPluginNames != null) {
+    if (controlPluginNames != null)
+    {
         queryParams.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
     }
     storePluginPropertiesAsParams(pluginProperties, queryParams);
@@ -1132,31 +1152,31 @@ public Payment createPayment(ComboPaymentTransaction comboPaymentTransaction, @N
     RequestOptions requestOptions = inputOptions.extend()
                                                           .withQueryParams(queryParams)
                                                           .withFollowLocation(followLocation).build();
-        return httpClient.doPost(uri, comboPaymentTransaction, Payment.class, requestOptions);
+    return httpClient.doPost(uri, comboPaymentTransaction, Payment.class, requestOptions);
     }
 
 
 public Payment createPayment(Guid accountId, PaymentTransaction paymentTransaction, RequestOptions inputOptions)
 {
-        return createPayment(accountId, null, paymentTransaction, null, ImmutableMap.<String, String>of(), inputOptions);
+    return createPayment(accountId, null, paymentTransaction, null, ImmutableMap.< String, String > of(), inputOptions);
 }
 
 public Payment createPayment(Guid accountId, PaymentTransaction paymentTransaction, Map<String, String> pluginProperties, RequestOptions inputOptions)
 {
-        return createPayment(accountId, null, paymentTransaction, null, pluginProperties, inputOptions);
+    return createPayment(accountId, null, paymentTransaction, null, pluginProperties, inputOptions);
 }
 
 
 
 public Payment createPayment(Guid accountId, @Nullable Guid paymentMethodId, PaymentTransaction paymentTransaction, RequestOptions inputOptions)
 {
-        return createPayment(accountId, paymentMethodId, paymentTransaction, null, ImmutableMap.<String, String>of(), inputOptions);
+    return createPayment(accountId, paymentMethodId, paymentTransaction, null, ImmutableMap.< String, String > of(), inputOptions);
 }
 
 
 public Payment createPayment(Guid accountId, @Nullable Guid paymentMethodId, PaymentTransaction paymentTransaction, Map<String, String> pluginProperties, RequestOptions inputOptions)
 {
-        return createPayment(accountId, paymentMethodId, paymentTransaction, null, pluginProperties, inputOptions);
+    return createPayment(accountId, paymentMethodId, paymentTransaction, null, pluginProperties, inputOptions);
 }
 
 public Payment createPayment(Guid accountId, @Nullable Guid paymentMethodId, PaymentTransaction paymentTransaction, @Nullable List<String> controlPluginNames, Map<String, String> pluginProperties, RequestOptions inputOptions)
@@ -1173,11 +1193,13 @@ public Payment createPayment(Guid accountId, @Nullable Guid paymentMethodId, Pay
 
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.PAYMENTS;
 
-    Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
-        if (paymentMethodId != null) {
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
+    if (paymentMethodId != null)
+    {
             params.Add("paymentMethodId", paymentMethodId.toString());
     }
-        if (controlPluginNames != null) {
+    if (controlPluginNames != null)
+    {
             params.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
     }
     storePluginPropertiesAsParams(pluginProperties, params);
@@ -1186,14 +1208,14 @@ public Payment createPayment(Guid accountId, @Nullable Guid paymentMethodId, Pay
     RequestOptions requestOptions = inputOptions.extend()
                                                           .withQueryParams(params)
                                                           .withFollowLocation(followLocation).build();
-        return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
+    return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
     }
 
   
 
 public Payment completePayment(PaymentTransaction paymentTransaction, RequestOptions requestOptions)
 {
-        return completePayment(paymentTransaction, ImmutableMap.<String, String>of(), requestOptions);
+    return completePayment(paymentTransaction, ImmutableMap.< String, String > of(), requestOptions);
 }
 
 
@@ -1205,21 +1227,21 @@ public Payment completePayment(PaymentTransaction paymentTransaction, Map<String
                            Config.PAYMENTS_PATH + "/" + paymentTransaction.getPaymentId() :
                            Config.PAYMENTS_PATH;
 
-    Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
     storePluginPropertiesAsParams(pluginProperties, params);
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend()
                                                           .withQueryParams(params)
                                                           .withFollowLocation(followLocation).build();
 
-        return httpClient.doPut(uri, paymentTransaction, Payment.class, requestOptions);
+    return httpClient.doPut(uri, paymentTransaction, Payment.class, requestOptions);
     }
 
    
 
 public Payment captureAuthorization(PaymentTransaction paymentTransaction, RequestOptions inputOptions)
 {
-        return captureAuthorization(paymentTransaction, null, ImmutableMap.<String, String>of(), inputOptions);
+    return captureAuthorization(paymentTransaction, null, ImmutableMap.< String, String > of(), inputOptions);
 }
 
 
@@ -1232,9 +1254,10 @@ public Payment captureAuthorization(PaymentTransaction paymentTransaction, @Null
                            Config.PAYMENTS_PATH + "/" + paymentTransaction.getPaymentId() :
                            Config.PAYMENTS_PATH;
 
-    Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
     storePluginPropertiesAsParams(pluginProperties, params);
-        if (controlPluginNames != null) {
+    if (controlPluginNames != null)
+    {
             params.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
     }
 
@@ -1243,13 +1266,13 @@ public Payment captureAuthorization(PaymentTransaction paymentTransaction, @Null
                                                           .withQueryParams(params)
                                                           .withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
+    return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
     }
 
 
 public Payment refundPayment(PaymentTransaction paymentTransaction, RequestOptions inputOptions)
 {
-        return refundPayment(paymentTransaction, null, ImmutableMap.<String, String>of(), inputOptions);
+    return refundPayment(paymentTransaction, null, ImmutableMap.< String, String > of(), inputOptions);
 }
 
 
@@ -1262,9 +1285,10 @@ public Payment refundPayment(PaymentTransaction paymentTransaction, @Nullable Li
                            Config.PAYMENTS_PATH + "/" + paymentTransaction.getPaymentId() + "/" + Config.REFUNDS :
                            Config.PAYMENTS_PATH + "/" + Config.REFUNDS;
 
-    Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
     storePluginPropertiesAsParams(pluginProperties, params);
-        if (controlPluginNames != null) {
+    if (controlPluginNames != null)
+    {
             params.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
     }
 
@@ -1273,12 +1297,12 @@ public Payment refundPayment(PaymentTransaction paymentTransaction, @Nullable Li
                                                           .withQueryParams(params)
                                                           .withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
+    return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
     }
     
 public Payment chargebackPayment(PaymentTransaction paymentTransaction, RequestOptions requestOptions)
 {
-        return chargebackPayment(paymentTransaction, null, ImmutableMap.<String, String>of(), requestOptions);
+    return chargebackPayment(paymentTransaction, null, ImmutableMap.< String, String > of(), requestOptions);
 }
 
 
@@ -1291,9 +1315,10 @@ public Payment chargebackPayment(PaymentTransaction paymentTransaction, @Nullabl
                            Config.PAYMENTS_PATH + "/" + paymentTransaction.getPaymentId() + "/" + Config.CHARGEBACKS :
                            Config.PAYMENTS_PATH + "/" + Config.CHARGEBACKS;
 
-    Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
     storePluginPropertiesAsParams(pluginProperties, params);
-        if (controlPluginNames != null) {
+    if (controlPluginNames != null)
+    {
             params.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
     }
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
@@ -1301,13 +1326,13 @@ public Payment chargebackPayment(PaymentTransaction paymentTransaction, @Nullabl
                                                           .withQueryParams(params)
                                                           .withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
+    return httpClient.doPost(uri, paymentTransaction, Payment.class, requestOptions);
     }
 
 
 public Payment voidPayment(Guid paymentId, String transactionExternalKey, RequestOptions inputOptions)
 {
-        return voidPayment(paymentId, null, transactionExternalKey, null, ImmutableMap.<String, String>of(), inputOptions);
+    return voidPayment(paymentId, null, transactionExternalKey, null, ImmutableMap.< String, String > of(), inputOptions);
 }
 
 
@@ -1320,22 +1345,24 @@ public Payment voidPayment(Guid paymentId, String paymentExternalKey, String tra
                            Config.PAYMENTS_PATH;
 
     PaymentTransaction paymentTransaction = new PaymentTransaction();
-        if (paymentExternalKey != null) {
-            paymentTransaction.setPaymentExternalKey(paymentExternalKey);
-        }
-        paymentTransaction.setTransactionExternalKey(transactionExternalKey);
+    if (paymentExternalKey != null)
+    {
+        paymentTransaction.setPaymentExternalKey(paymentExternalKey);
+    }
+    paymentTransaction.setTransactionExternalKey(transactionExternalKey);
 
-        Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
-        storePluginPropertiesAsParams(pluginProperties, params);
-        if (controlPluginNames != null) {
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
+    storePluginPropertiesAsParams(pluginProperties, params);
+    if (controlPluginNames != null)
+    {
             params.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
-        }
+    }
 
-        Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
-        RequestOptions requestOptions = inputOptions.extend()
-                                                          .withQueryParams(params)
-                                                          .withFollowLocation(followLocation).build();
-        return httpClient.doDelete(uri, paymentTransaction, Payment.class, requestOptions);
+    Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
+    RequestOptions requestOptions = inputOptions.extend()
+                                                      .withQueryParams(params)
+                                                      .withFollowLocation(followLocation).build();
+    return httpClient.doDelete(uri, paymentTransaction, Payment.class, requestOptions);
     }
 
     // Hosted payment pages
@@ -1343,19 +1370,21 @@ public Payment voidPayment(Guid paymentId, String paymentExternalKey, String tra
 
 public HostedPaymentPageFormDescriptor buildFormDescriptor(HostedPaymentPageFields fields, Guid kbAccountId, @Nullable Guid kbPaymentMethodId, Map<String, String> pluginProperties, RequestOptions inputOptions)
 {
-        return buildFormDescriptor(fields, kbAccountId, kbPaymentMethodId, null, pluginProperties, inputOptions);
+    return buildFormDescriptor(fields, kbAccountId, kbPaymentMethodId, null, pluginProperties, inputOptions);
 }
 
 public HostedPaymentPageFormDescriptor buildFormDescriptor(HostedPaymentPageFields fields, Guid kbAccountId, @Nullable Guid kbPaymentMethodId, @Nullable List<String> controlPluginNames, Map<String, String> pluginProperties, RequestOptions inputOptions)
 {
     String uri = Config.PAYMENT_GATEWAYS_PATH + "/" + Config.HOSTED + "/" + Config.FORM + "/" + kbAccountId;
 
-    Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
     storePluginPropertiesAsParams(pluginProperties, params);
-        if (controlPluginNames != null) {
+    if (controlPluginNames != null)
+    {
             params.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
     }
-        if (kbPaymentMethodId != null) {
+    if (kbPaymentMethodId != null)
+    {
             params.Add(Config.QUERY_PAYMENT_METHOD_ID, kbPaymentMethodId.toString());
     }
 
@@ -1363,14 +1392,14 @@ public HostedPaymentPageFormDescriptor buildFormDescriptor(HostedPaymentPageFiel
                                                           .withQueryParams(params)
                                                           .withFollowLocation(false).build();
 
-        return httpClient.doPost(uri, fields, HostedPaymentPageFormDescriptor.class, requestOptions);
+    return httpClient.doPost(uri, fields, HostedPaymentPageFormDescriptor.class, requestOptions);
     }
 
    
 
 public HostedPaymentPageFormDescriptor buildFormDescriptor(ComboHostedPaymentPage comboHostedPaymentPage, Map<String, String> pluginProperties, RequestOptions inputOptions)
 {
-        return buildFormDescriptor(comboHostedPaymentPage, null, pluginProperties, inputOptions);
+    return buildFormDescriptor(comboHostedPaymentPage, null, pluginProperties, inputOptions);
 }
 
 
@@ -1378,8 +1407,9 @@ public HostedPaymentPageFormDescriptor buildFormDescriptor(ComboHostedPaymentPag
 {
     String uri = Config.PAYMENT_GATEWAYS_PATH + "/" + Config.HOSTED + "/" + Config.FORM;
 
-    Multimap<String, String> params = HashMultimap.create(inputOptions.getQueryParams());
-        if (controlPluginNames != null) {
+    Multimap < String, String > params = HashMultimap.create(inputOptions.getQueryParams());
+    if (controlPluginNames != null)
+    {
             params.putAll(KillBillHttpClient.CONTROL_PLUGIN_NAME, controlPluginNames);
     }
     storePluginPropertiesAsParams(pluginProperties, params);
@@ -1388,7 +1418,7 @@ public HostedPaymentPageFormDescriptor buildFormDescriptor(ComboHostedPaymentPag
                                                           .withQueryParams(params)
                                                           .withFollowLocation(false).build();
 
-        return httpClient.doPost(uri, comboHostedPaymentPage, HostedPaymentPageFormDescriptor.class, requestOptions);
+    return httpClient.doPost(uri, comboHostedPaymentPage, HostedPaymentPageFormDescriptor.class, requestOptions);
     }
 
 
@@ -1396,12 +1426,12 @@ public Response processNotification(String notification, String pluginName, Map<
 {
     String uri = Config.PAYMENT_GATEWAYS_PATH + "/" + Config.NOTIFICATION + "/" + pluginName;
 
-    Multimap<String, String> params = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap < String, String > params = HashMultimap.< String, String > create(inputOptions.getQueryParams());
     storePluginPropertiesAsParams(pluginProperties, params);
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(params).build();
 
-        return httpClient.doPost(uri, notification, requestOptions);
+    return httpClient.doPost(uri, notification, requestOptions);
 }
 
 
@@ -1409,9 +1439,10 @@ public InvoicePayment createInvoicePaymentRefund(InvoicePaymentTransaction refun
 {
     Preconditions.checkNotNull(refundTransaction.getPaymentId(), "InvoicePaymentTransaction#paymentId cannot be null");
 
-        // Specify isAdjusted for invoice adjustment and invoice item adjustment
-        // Specify adjustments for invoice item adjustments only
-        if (refundTransaction.getAdjustments() != null) {
+    // Specify isAdjusted for invoice adjustment and invoice item adjustment
+    // Specify adjustments for invoice item adjustments only
+    if (refundTransaction.getAdjustments() != null)
+    {
         for (InvoiceItem invoiceItem : refundTransaction.getAdjustments())
         {
             Preconditions.checkNotNull(invoiceItem.getInvoiceItemId(), "InvoiceItem#invoiceItemId cannot be null");
@@ -1423,7 +1454,7 @@ public InvoicePayment createInvoicePaymentRefund(InvoicePaymentTransaction refun
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, refundTransaction, InvoicePayment.class, requestOptions);
+    return httpClient.doPost(uri, refundTransaction, InvoicePayment.class, requestOptions);
     }
 
     // Chargebacks
@@ -1439,7 +1470,7 @@ public InvoicePayment createInvoicePaymentChargeback(InvoicePaymentTransaction c
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, chargebackTransaction, InvoicePayment.class, requestOptions);
+    return httpClient.doPost(uri, chargebackTransaction, InvoicePayment.class, requestOptions);
     }
 
     // Payment methods
@@ -1448,39 +1479,39 @@ public InvoicePayment createInvoicePaymentChargeback(InvoicePaymentTransaction c
 
 public PaymentMethods getPaymentMethods(RequestOptions inputOptions)
 {
-        return getPaymentMethods(0L, 100L, inputOptions);
+    return getPaymentMethods(0L, 100L, inputOptions);
 }
 
 
 public PaymentMethods getPaymentMethods(long offset, long limit, RequestOptions inputOptions)
 {
-        return getPaymentMethods(offset, limit, AuditLevel.NONE, inputOptions);
+    return getPaymentMethods(offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 public PaymentMethods getPaymentMethods(long offset, long limit, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.PAYMENT_METHODS_PATH + "/" + Config.PAGINATION;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
+    return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
     }
 
    
 public PaymentMethods searchPaymentMethods(String key, RequestOptions inputOptions)
 {
-        return searchPaymentMethods(key, 0L, 100L, inputOptions);
+    return searchPaymentMethods(key, 0L, 100L, inputOptions);
 }
 
 
 public PaymentMethods searchPaymentMethods(String key, long offset, long limit, RequestOptions inputOptions)
 {
-        return searchPaymentMethods(key, offset, limit, AuditLevel.NONE, inputOptions);
+    return searchPaymentMethods(key, offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -1488,26 +1519,26 @@ public PaymentMethods searchPaymentMethods(String key, long offset, long limit, 
 {
     String uri = Config.PAYMENT_METHODS_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
+    return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
     }
 
    
 
 public PaymentMethod getPaymentMethod(Guid paymentMethodId, RequestOptions inputOptions)
 {
-        return getPaymentMethod(paymentMethodId, false, inputOptions);
+    return getPaymentMethod(paymentMethodId, false, inputOptions);
 }
 
 public PaymentMethod getPaymentMethod(Guid paymentMethodId, bool withPluginInfo, RequestOptions inputOptions)
 {
-        return getPaymentMethod(paymentMethodId, withPluginInfo, AuditLevel.NONE, inputOptions);
+    return getPaymentMethod(paymentMethodId, withPluginInfo, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -1515,25 +1546,25 @@ public PaymentMethod getPaymentMethod(Guid paymentMethodId, bool withPluginInfo,
 {
     String uri = Config.PAYMENT_METHODS_PATH + "/" + paymentMethodId;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_WITH_PLUGIN_INFO, String.valueOf(withPluginInfo));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, PaymentMethod.class, requestOptions);
+    return httpClient.doGet(uri, PaymentMethod.class, requestOptions);
     }
 
   
 
 public PaymentMethod getPaymentMethodByKey(String externalKey, RequestOptions inputOptions)
 {
-        return getPaymentMethodByKey(externalKey, false, inputOptions);
+    return getPaymentMethodByKey(externalKey, false, inputOptions);
 }
 
 public PaymentMethod getPaymentMethodByKey(String externalKey, bool withPluginInfo, RequestOptions inputOptions)
 {
-        return getPaymentMethodByKey(externalKey, withPluginInfo, AuditLevel.NONE, inputOptions);
+    return getPaymentMethodByKey(externalKey, withPluginInfo, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -1541,21 +1572,21 @@ public PaymentMethod getPaymentMethodByKey(String externalKey, bool withPluginIn
 {
     String uri = Config.PAYMENT_METHODS_PATH;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_EXTERNAL_KEY, externalKey);
     queryParams.Add(Config.QUERY_WITH_PLUGIN_INFO, String.valueOf(withPluginInfo));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, PaymentMethod.class, requestOptions);
+    return httpClient.doGet(uri, PaymentMethod.class, requestOptions);
     }
 
 
 public PaymentMethods getPaymentMethodsForAccount(Guid accountId, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.PAYMENT_METHODS;
-        return httpClient.doGet(uri, PaymentMethods.class, inputOptions);
+    return httpClient.doGet(uri, PaymentMethods.class, inputOptions);
     }
 
    
@@ -1564,37 +1595,37 @@ public PaymentMethods getPaymentMethodsForAccount(Guid accountId, Map<String, St
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.PAYMENT_METHODS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_WITH_PLUGIN_INFO, String.valueOf(withPluginInfo));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
     storePluginPropertiesAsParams(pluginProperties, queryParams);
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
+    return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
     }
 
   
 public PaymentMethods searchPaymentMethodsByKey(String key, RequestOptions inputOptions)
 {
-        return searchPaymentMethodsByKeyAndPlugin(key, null, inputOptions);
+    return searchPaymentMethodsByKeyAndPlugin(key, null, inputOptions);
 }
 
 
 public PaymentMethods searchPaymentMethodsByKey(String key, bool withPluginInfo, RequestOptions inputOptions)
 {
-        return searchPaymentMethodsByKeyAndPlugin(key, withPluginInfo, null, AuditLevel.NONE, inputOptions);
+    return searchPaymentMethodsByKeyAndPlugin(key, withPluginInfo, null, AuditLevel.NONE, inputOptions);
 }
 
 public PaymentMethods searchPaymentMethodsByKeyAndPlugin(String key, @Nullable String pluginName, RequestOptions inputOptions)
 {
-        return searchPaymentMethodsByKeyAndPlugin(key, pluginName, AuditLevel.NONE, inputOptions);
+    return searchPaymentMethodsByKeyAndPlugin(key, pluginName, AuditLevel.NONE, inputOptions);
 }
 
 
 public PaymentMethods searchPaymentMethodsByKeyAndPlugin(String key, @Nullable String pluginName, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return searchPaymentMethodsByKeyAndPlugin(key, pluginName != null, pluginName, auditLevel, inputOptions);
+    return searchPaymentMethodsByKeyAndPlugin(key, pluginName != null, pluginName, auditLevel, inputOptions);
 }
 
 
@@ -1602,14 +1633,14 @@ public PaymentMethods searchPaymentMethodsByKeyAndPlugin(String key, bool withPl
 {
     String uri = Config.PAYMENT_METHODS_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_PAYMENT_METHOD_PLUGIN_NAME, Strings.nullToEmpty(pluginName));
     queryParams.Add(Config.QUERY_WITH_PLUGIN_INFO, String.valueOf(withPluginInfo));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
+    return httpClient.doGet(uri, PaymentMethods.class, requestOptions);
     }
 
     
@@ -1621,13 +1652,13 @@ public PaymentMethod createPaymentMethod(PaymentMethod paymentMethod, RequestOpt
 
     String uri = Config.ACCOUNTS_PATH + "/" + paymentMethod.getAccountId() + "/" + Config.PAYMENT_METHODS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_PAYMENT_METHOD_IS_DEFAULT, paymentMethod.getIsDefault() ? "true" : "false");
 
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, paymentMethod, PaymentMethod.class, requestOptions);
+    return httpClient.doPost(uri, paymentMethod, PaymentMethod.class, requestOptions);
     }
 
    
@@ -1644,7 +1675,7 @@ public void deletePaymentMethod(Guid paymentMethodId, Boolean deleteDefault, Req
 {
     String uri = Config.PAYMENT_METHODS_PATH + "/" + paymentMethodId;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_DELETE_DEFAULT_PM_WITH_AUTO_PAY_OFF, deleteDefault.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
@@ -1656,8 +1687,9 @@ public void refreshPaymentMethods(Guid accountId, String pluginName, Map<String,
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.PAYMENT_METHODS + "/refresh";
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
-        if (pluginName != null) {
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
+    if (pluginName != null)
+    {
         queryParams.Add(Config.QUERY_PAYMENT_METHOD_PLUGIN_NAME, pluginName);
     }
     storePluginPropertiesAsParams(pluginProperties, queryParams);
@@ -1692,14 +1724,14 @@ public void uploadXMLOverdueConfig(InputStream overdueConfigInputStream, Request
 public String getXMLOverdueConfig(RequestOptions inputOptions)
 {
     String uri = Config.OVERDUE_PATH;
-        return getResourceFile(uri, "application/xml", inputOptions);
+    return getResourceFile(uri, "application/xml", inputOptions);
 }
 
 public OverdueState getOverdueStateForAccount(Guid accountId, RequestOptions inputOptions)
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.OVERDUE;
 
-        return httpClient.doGet(uri, OverdueState.class, inputOptions);
+    return httpClient.doGet(uri, OverdueState.class, inputOptions);
     }
 
     // Tag definitions
@@ -1708,7 +1740,7 @@ public OverdueState getOverdueStateForAccount(Guid accountId, RequestOptions inp
 
 public TagDefinitions getTagDefinitions(RequestOptions inputOptions)
 {
-        return httpClient.doGet(Config.TAG_DEFINITIONS_PATH, TagDefinitions.class, inputOptions);
+    return httpClient.doGet(Config.TAG_DEFINITIONS_PATH, TagDefinitions.class, inputOptions);
     }
 
  
@@ -1716,7 +1748,7 @@ public TagDefinition getTagDefinition(Guid tagDefinitionId, RequestOptions input
 {
     String uri = Config.TAG_DEFINITIONS_PATH + "/" + tagDefinitionId;
 
-        return httpClient.doGet(uri, TagDefinition.class, inputOptions);
+    return httpClient.doGet(uri, TagDefinition.class, inputOptions);
     }
 
    
@@ -1725,7 +1757,7 @@ public TagDefinition createTagDefinition(TagDefinition tagDefinition, RequestOpt
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(Config.TAG_DEFINITIONS_PATH, tagDefinition, TagDefinition.class, requestOptions);
+    return httpClient.doPost(Config.TAG_DEFINITIONS_PATH, tagDefinition, TagDefinition.class, requestOptions);
     }
 
    
@@ -1742,12 +1774,12 @@ public void deleteTagDefinition(Guid tagDefinitionId, RequestOptions inputOption
 
 public Tags getTags(RequestOptions inputOptions)
 {
-        return getTags(0L, 100L, inputOptions);
+    return getTags(0L, 100L, inputOptions);
 }
 
 public Tags getTags(long offset, long limit, RequestOptions inputOptions)
 {
-        return getTags(offset, limit, AuditLevel.NONE, inputOptions);
+    return getTags(offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -1755,27 +1787,27 @@ public Tags getTags(long offset, long limit, AuditLevel auditLevel, RequestOptio
 {
     String uri = Config.TAGS_PATH + "/" + Config.PAGINATION;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Tags.class, requestOptions);
+    return httpClient.doGet(uri, Tags.class, requestOptions);
     }
 
    
 
 public Tags searchTags(String key, RequestOptions inputOptions)
 {
-        return searchTags(key, 0L, 100L, inputOptions);
+    return searchTags(key, 0L, 100L, inputOptions);
 }
 
 
 public Tags searchTags(String key, long offset, long limit, RequestOptions inputOptions)
 {
-        return searchTags(key, offset, limit, AuditLevel.NONE, inputOptions);
+    return searchTags(key, offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -1783,21 +1815,21 @@ public Tags searchTags(String key, long offset, long limit, AuditLevel auditLeve
 {
     String uri = Config.TAGS_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Tags.class, requestOptions);
+    return httpClient.doGet(uri, Tags.class, requestOptions);
     }
 
    
 
 public Tags getAllAccountTags(Guid accountId, String objectType, RequestOptions inputOptions)
 {
-        return getAllAccountTags(accountId, objectType, AuditLevel.NONE, inputOptions);
+    return getAllAccountTags(accountId, objectType, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -1805,32 +1837,33 @@ public Tags getAllAccountTags(Guid accountId, @Nullable String objectType, Audit
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.ALL_TAGS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
-        if (objectType != null) {
+    if (objectType != null)
+    {
         queryParams.Add(Config.QUERY_OBJECT_TYPE, objectType);
     }
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
-        return httpClient.doGet(uri, Tags.class, requestOptions);
+    return httpClient.doGet(uri, Tags.class, requestOptions);
     }
 
    
 public Tags getAccountTags(Guid accountId, RequestOptions inputOptions)
 {
-        return getAccountTags(accountId, AuditLevel.NONE, inputOptions);
+    return getAccountTags(accountId, AuditLevel.NONE, inputOptions);
 }
 
 
 public Tags getAccountTags(Guid accountId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getObjectTags(accountId, Config.ACCOUNTS_PATH, auditLevel, inputOptions);
+    return getObjectTags(accountId, Config.ACCOUNTS_PATH, auditLevel, inputOptions);
 }
 
 
 public Tags createAccountTag(Guid accountId, Guid tagDefinitionId, RequestOptions inputOptions)
 {
-        return createObjectTag(accountId, Config.ACCOUNTS_PATH, tagDefinitionId, inputOptions);
+    return createObjectTag(accountId, Config.ACCOUNTS_PATH, tagDefinitionId, inputOptions);
 }
 
 
@@ -1842,18 +1875,18 @@ public void deleteAccountTag(Guid accountId, Guid tagDefinitionId, RequestOption
 
 public Tags getBundleTags(Guid bundleId, RequestOptions inputOptions)
 {
-        return getBundleTags(bundleId, AuditLevel.NONE, inputOptions);
+    return getBundleTags(bundleId, AuditLevel.NONE, inputOptions);
 }
 
 
 public Tags getBundleTags(Guid bundleId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getObjectTags(bundleId, Config.BUNDLES_PATH, auditLevel, inputOptions);
+    return getObjectTags(bundleId, Config.BUNDLES_PATH, auditLevel, inputOptions);
 }
 
 public Tags createBundleTag(Guid bundleId, Guid tagDefinitionId, RequestOptions inputOptions)
 {
-        return createObjectTag(bundleId, Config.BUNDLES_PATH, tagDefinitionId, inputOptions);
+    return createObjectTag(bundleId, Config.BUNDLES_PATH, tagDefinitionId, inputOptions);
 }
 
 
@@ -1866,20 +1899,20 @@ public void deleteBundleTag(Guid bundleId, Guid tagDefinitionId, RequestOptions 
 
 public Tags getSubscriptionTags(Guid subscriptionId, RequestOptions inputOptions)
 {
-        return getSubscriptionTags(subscriptionId, AuditLevel.NONE, inputOptions);
+    return getSubscriptionTags(subscriptionId, AuditLevel.NONE, inputOptions);
 }
 
 
 
 public Tags getSubscriptionTags(Guid subscriptionId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getObjectTags(subscriptionId, Config.SUBSCRIPTIONS_PATH, auditLevel, inputOptions);
+    return getObjectTags(subscriptionId, Config.SUBSCRIPTIONS_PATH, auditLevel, inputOptions);
 }
 
 
 public Tags createSubscriptionTag(Guid subscriptionId, Guid tagDefinitionId, RequestOptions inputOptions)
 {
-        return createObjectTag(subscriptionId, Config.SUBSCRIPTIONS_PATH, tagDefinitionId, inputOptions);
+    return createObjectTag(subscriptionId, Config.SUBSCRIPTIONS_PATH, tagDefinitionId, inputOptions);
 }
 
 
@@ -1891,19 +1924,19 @@ public void deleteSubscriptionTag(Guid subscriptionId, Guid tagDefinitionId, Req
 
 public Tags getInvoiceTags(Guid invoiceId, RequestOptions inputOptions)
 {
-        return getInvoiceTags(invoiceId, AuditLevel.NONE, inputOptions);
+    return getInvoiceTags(invoiceId, AuditLevel.NONE, inputOptions);
 }
 
 
 public Tags getInvoiceTags(Guid invoiceId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getObjectTags(invoiceId, Config.INVOICES_PATH, auditLevel, inputOptions);
+    return getObjectTags(invoiceId, Config.INVOICES_PATH, auditLevel, inputOptions);
 }
 
 
 public Tags createInvoiceTag(Guid invoiceId, Guid tagDefinitionId, RequestOptions inputOptions)
 {
-        return createObjectTag(invoiceId, Config.INVOICES_PATH, tagDefinitionId, inputOptions);
+    return createObjectTag(invoiceId, Config.INVOICES_PATH, tagDefinitionId, inputOptions);
 }
 
 
@@ -1915,19 +1948,19 @@ public void deleteInvoiceTag(Guid invoiceId, Guid tagDefinitionId, RequestOption
 
 public Tags getPaymentTags(Guid paymentId, RequestOptions inputOptions)
 {
-        return getPaymentTags(paymentId, AuditLevel.NONE, inputOptions);
+    return getPaymentTags(paymentId, AuditLevel.NONE, inputOptions);
 }
 
 
 public Tags getPaymentTags(Guid paymentId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
-        return getObjectTags(paymentId, Config.PAYMENTS_PATH, auditLevel, inputOptions);
+    return getObjectTags(paymentId, Config.PAYMENTS_PATH, auditLevel, inputOptions);
 }
 
 
 public Tags createPaymentTag(Guid paymentId, Guid tagDefinitionId, RequestOptions inputOptions)
 {
-        return createObjectTag(paymentId, Config.PAYMENTS_PATH, tagDefinitionId, inputOptions);
+    return createObjectTag(paymentId, Config.PAYMENTS_PATH, tagDefinitionId, inputOptions);
 }
 
 public void deletePaymentTag(Guid paymentId, Guid tagDefinitionId, RequestOptions inputOptions)
@@ -1939,32 +1972,32 @@ private Tags getObjectTags(Guid objectId, String resourcePathPrefix, AuditLevel 
 {
     String uri = resourcePathPrefix + "/" + objectId + "/" + Config.TAGS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, Tags.class, requestOptions);
+    return httpClient.doGet(uri, Tags.class, requestOptions);
     }
 
     private Tags createObjectTag(Guid objectId, String resourcePathPrefix, Guid tagDefinitionId, RequestOptions inputOptions)
 {
     String uri = resourcePathPrefix + "/" + objectId + "/" + Config.TAGS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_TAGS, tagDefinitionId.toString());
 
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, null, Tags.class, requestOptions);
+    return httpClient.doPost(uri, null, Tags.class, requestOptions);
     }
 
     private void deleteObjectTag(Guid objectId, String resourcePathPrefix, Guid tagDefinitionId, RequestOptions inputOptions)
 {
     String uri = resourcePathPrefix + "/" + objectId + "/" + Config.TAGS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_TAGS, tagDefinitionId.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
@@ -1977,11 +2010,11 @@ private Tags getObjectTags(Guid objectId, String resourcePathPrefix, AuditLevel 
 
 public CustomFields getCustomFields(RequestOptions inputOptions)
 {
-        return getCustomFields(0L, 100L, inputOptions);
+    return getCustomFields(0L, 100L, inputOptions);
 }
 public CustomFields getCustomFields(long offset, long limit, RequestOptions inputOptions)
 {
-        return getCustomFields(offset, limit, AuditLevel.NONE, inputOptions);
+    return getCustomFields(offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -1989,27 +2022,27 @@ public CustomFields getCustomFields(long offset, long limit, AuditLevel auditLev
 {
     String uri = Config.CUSTOM_FIELDS_PATH + "/" + Config.PAGINATION;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, CustomFields.class, requestOptions);
+    return httpClient.doGet(uri, CustomFields.class, requestOptions);
     }
 
    
 
 public CustomFields searchCustomFields(String key, RequestOptions inputOptions)
 {
-        return searchCustomFields(key, 0L, 100L, inputOptions);
+    return searchCustomFields(key, 0L, 100L, inputOptions);
 }
 
 
 public CustomFields searchCustomFields(String key, long offset, long limit, RequestOptions inputOptions)
 {
-        return searchCustomFields(key, offset, limit, AuditLevel.NONE, inputOptions);
+    return searchCustomFields(key, offset, limit, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -2017,20 +2050,20 @@ public CustomFields searchCustomFields(String key, long offset, long limit, Audi
 {
     String uri = Config.CUSTOM_FIELDS_PATH + "/" + Config.SEARCH + "/" + UTF8UrlEncoder.encode(key);
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_SEARCH_OFFSET, String.valueOf(offset));
     queryParams.Add(Config.QUERY_SEARCH_LIMIT, String.valueOf(limit));
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, CustomFields.class, requestOptions);
+    return httpClient.doGet(uri, CustomFields.class, requestOptions);
     }
 
    
 public CustomFields getAccountCustomFields(Guid accountId, RequestOptions inputOptions)
 {
-        return getAccountCustomFields(accountId, AuditLevel.NONE, inputOptions);
+    return getAccountCustomFields(accountId, AuditLevel.NONE, inputOptions);
 }
 
 
@@ -2038,19 +2071,19 @@ public CustomFields getAccountCustomFields(Guid accountId, AuditLevel auditLevel
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.CUSTOM_FIELDS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, CustomFields.class, requestOptions);
+    return httpClient.doGet(uri, CustomFields.class, requestOptions);
     }
 
    
 
 public CustomFields createAccountCustomField(Guid accountId, CustomField customField, RequestOptions inputOptions)
 {
-        return createAccountCustomFields(accountId, ImmutableList.<CustomField>of(customField), inputOptions);
+    return createAccountCustomFields(accountId, ImmutableList.< CustomField > of(customField), inputOptions);
 }
 
 public CustomFields createAccountCustomFields(Guid accountId, Iterable<CustomField> customFields, RequestOptions inputOptions)
@@ -2060,13 +2093,13 @@ public CustomFields createAccountCustomFields(Guid accountId, Iterable<CustomFie
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, customFields, CustomFields.class, requestOptions);
+    return httpClient.doPost(uri, customFields, CustomFields.class, requestOptions);
     }
 
   
 public void deleteAccountCustomField(Guid accountId, Guid customFieldId, RequestOptions inputOptions)
 {
-    deleteAccountCustomFields(accountId, ImmutableList.<Guid>of(customFieldId), inputOptions);
+    deleteAccountCustomFields(accountId, ImmutableList.< Guid > of(customFieldId), inputOptions);
 }
 
 
@@ -2080,8 +2113,9 @@ public void deleteAccountCustomFields(Guid accountId, @Nullable Iterable<Guid> c
 {
     String uri = Config.ACCOUNTS_PATH + "/" + accountId + "/" + Config.CUSTOM_FIELDS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
-        if (customFieldIds != null) {
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
+    if (customFieldIds != null)
+    {
         queryParams.Add(Config.QUERY_CUSTOM_FIELDS, Joiner.on(",").join(customFieldIds));
     }
 
@@ -2093,25 +2127,25 @@ public void deleteAccountCustomFields(Guid accountId, @Nullable Iterable<Guid> c
 
 public CustomFields getPaymentMethodCustomFields(Guid paymentMethodId, RequestOptions inputOptions)
 {
-        return getPaymentMethodCustomFields(paymentMethodId, AuditLevel.NONE, inputOptions);
+    return getPaymentMethodCustomFields(paymentMethodId, AuditLevel.NONE, inputOptions);
 }
 
 public CustomFields getPaymentMethodCustomFields(Guid paymentMethodId, AuditLevel auditLevel, RequestOptions inputOptions)
 {
     String uri = Config.PAYMENT_METHODS_PATH + "/" + paymentMethodId + "/" + Config.CUSTOM_FIELDS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_AUDIT, auditLevel.toString());
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, CustomFields.class, requestOptions);
+    return httpClient.doGet(uri, CustomFields.class, requestOptions);
     }
 
    
 public CustomFields createPaymentMethodCustomField(Guid paymentMethodId, CustomField customField, RequestOptions inputOptions)
 {
-        return createPaymentMethodCustomFields(paymentMethodId, ImmutableList.of(customField), inputOptions);
+    return createPaymentMethodCustomFields(paymentMethodId, ImmutableList.of(customField), inputOptions);
 }
 
 
@@ -2122,7 +2156,7 @@ public CustomFields createPaymentMethodCustomFields(Guid paymentMethodId, Iterab
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, customFields, CustomFields.class, requestOptions);
+    return httpClient.doPost(uri, customFields, CustomFields.class, requestOptions);
     }
 
   
@@ -2135,8 +2169,9 @@ public void deletePaymentMethodCustomFields(Guid paymentMethodId, @Nullable Iter
 {
     String uri = Config.PAYMENT_METHODS_PATH + "/" + paymentMethodId + "/" + Config.CUSTOM_FIELDS;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
-        if (customFieldIds != null) {
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
+    if (customFieldIds != null)
+    {
         queryParams.Add(Config.QUERY_CUSTOM_FIELDS, Joiner.on(",").join(customFieldIds));
     }
 
@@ -2152,12 +2187,12 @@ public List<PlanDetail> getAvailableAddons(String baseProductName, RequestOption
 {
     String uri = Config.CATALOG_PATH + "/availableAddons";
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add("baseProductName", baseProductName);
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
-        return httpClient.doGet(uri, PlanDetails.class, requestOptions);
+    return httpClient.doGet(uri, PlanDetails.class, requestOptions);
     }
 
     
@@ -2165,7 +2200,7 @@ public List<PlanDetail> getBasePlans(RequestOptions inputOptions)
 {
     String uri = Config.CATALOG_PATH + "/availableBasePlans";
 
-        return httpClient.doGet(uri, PlanDetails.class, inputOptions);
+    return httpClient.doGet(uri, PlanDetails.class, inputOptions);
     }
 
    
@@ -2186,28 +2221,29 @@ public void uploadXMLCatalog(InputStream catalogInputStream, RequestOptions inpu
 
 public Catalog getJSONCatalog(RequestOptions inputOptions)
 {
-        return this.getJSONCatalog(null, inputOptions);
+    return this.getJSONCatalog(null, inputOptions);
 }
 
 
 public Catalog getJSONCatalog(DateTime requestedDate, RequestOptions inputOptions)
 {
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
-        if (requestedDate != null) {
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
+    if (requestedDate != null)
+    {
         queryParams.Add(Config.QUERY_REQUESTED_DT, requestedDate.toDateTimeISO().toString());
     }
 
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).build();
 
     String uri = Config.CATALOG_PATH;
-        return httpClient.doGet(uri, Catalog.class, requestOptions);
+    return httpClient.doGet(uri, Catalog.class, requestOptions);
     }
 
 
 public String getXMLCatalog(RequestOptions inputOptions)
 {
     String uri = Config.CATALOG_PATH;
-        return getResourceFile(uri, ACCEPT_XML, inputOptions);
+    return getResourceFile(uri, ACCEPT_XML, inputOptions);
 }
 
 // Tenants
@@ -2222,7 +2258,7 @@ public Tenant createTenant(Tenant tenant, RequestOptions inputOptions)
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(Config.TENANTS_PATH, tenant, Tenant.class, requestOptions);
+    return httpClient.doPost(Config.TENANTS_PATH, tenant, Tenant.class, requestOptions);
     }
 
    
@@ -2231,13 +2267,13 @@ public TenantKey registerCallbackNotificationForTenant(String callback, RequestO
 {
     String uri = Config.TENANTS_PATH + "/" + Config.REGISTER_NOTIFICATION_CALLBACK;
 
-    Multimap<String, String> queryParams = HashMultimap.<String, String>create(inputOptions.getQueryParams());
+    Multimap<String, String> queryParams = HashMultimap.< String, String> create(inputOptions.getQueryParams());
     queryParams.Add(Config.QUERY_NOTIFICATION_CALLBACK, callback);
 
     Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
     RequestOptions requestOptions = inputOptions.extend().withQueryParams(queryParams).withFollowLocation(followLocation).build();
 
-        return httpClient.doPost(uri, null, TenantKey.class, requestOptions);
+    return httpClient.doPost(uri, null, TenantKey.class, requestOptions);
     }
 
    
@@ -2245,7 +2281,7 @@ public TenantKey registerCallbackNotificationForTenant(String callback, RequestO
 public TenantKey getCallbackNotificationForTenant(RequestOptions inputOptions)
 {
     String uri = Config.TENANTS_PATH + "/" + Config.REGISTER_NOTIFICATION_CALLBACK;
-        return httpClient.doGet(uri, TenantKey.class, inputOptions);
+    return httpClient.doGet(uri, TenantKey.class, inputOptions);
     }
 
    
@@ -2262,7 +2298,7 @@ public void unregisterCallbackNotificationForTenant(RequestOptions inputOptions)
 public TenantKey registerPluginConfigurationForTenant(String pluginName, String pluginConfigFilePath, RequestOptions inputOptions)
 {
     String uri = Config.TENANTS_PATH + "/" + Config.UPLOAD_PLUGIN_CONFIG + "/" + pluginName;
-        return uploadFile(pluginConfigFilePath, uri, "text/plain", inputOptions, TenantKey.class);
+    return uploadFile(pluginConfigFilePath, uri, "text/plain", inputOptions, TenantKey.class);
     }
 
    
@@ -2270,7 +2306,7 @@ public TenantKey registerPluginConfigurationForTenant(String pluginName, String 
 public TenantKey registerPluginConfigurationForTenant(String pluginName, InputStream pluginConfigInputStream, RequestOptions inputOptions)
 {
     String uri = Config.TENANTS_PATH + "/" + Config.UPLOAD_PLUGIN_CONFIG + "/" + pluginName;
-        return uploadFile(pluginConfigInputStream, uri, "text/plain", inputOptions, TenantKey.class);
+    return uploadFile(pluginConfigInputStream, uri, "text/plain", inputOptions, TenantKey.class);
     }
 
     
@@ -2283,14 +2319,14 @@ public TenantKey postPluginConfigurationPropertiesForTenant(String pluginName, S
                                                    .withFollowLocation(true)
                                                    .withHeader(KillBillHttpClient.HTTP_HEADER_CONTENT_TYPE, "text/plain")
                                                    .build();
-        return httpClient.doPost(uri, pluginConfigProperties, TenantKey.class, options);
+    return httpClient.doPost(uri, pluginConfigProperties, TenantKey.class, options);
     }
 
    
 public TenantKey getPluginConfigurationForTenant(String pluginName, RequestOptions inputOptions)
 {
     String uri = Config.TENANTS_PATH + "/" + Config.UPLOAD_PLUGIN_CONFIG + "/" + pluginName;
-        return httpClient.doGet(uri, TenantKey.class, inputOptions);
+    return httpClient.doGet(uri, TenantKey.class, inputOptions);
     }
 
    
@@ -2304,13 +2340,13 @@ public void unregisterPluginConfigurationForTenant(String pluginName, RequestOpt
 public TenantKey registerPluginPaymentStateMachineConfigurationForTenant(String pluginName, String pluginPaymentStateMachineConfigFilePath, RequestOptions inputOptions)
 {
     String uri = Config.TENANTS_PATH + "/" + Config.UPLOAD_PLUGIN_PAYMENT_STATE_MACHINE_CONFIG + "/" + pluginName;
-        return uploadFile(pluginPaymentStateMachineConfigFilePath, uri, "text/plain", inputOptions, TenantKey.class);
+    return uploadFile(pluginPaymentStateMachineConfigFilePath, uri, "text/plain", inputOptions, TenantKey.class);
     }
 
     public TenantKey registerPluginPaymentStateMachineConfigurationForTenant(String pluginName, InputStream pluginPaymentStateMachineConfigInputStream, RequestOptions inputOptions)
 {
     String uri = Config.TENANTS_PATH + "/" + Config.UPLOAD_PLUGIN_PAYMENT_STATE_MACHINE_CONFIG + "/" + pluginName;
-        return uploadFile(pluginPaymentStateMachineConfigInputStream, uri, "text/plain", inputOptions, TenantKey.class);
+    return uploadFile(pluginPaymentStateMachineConfigInputStream, uri, "text/plain", inputOptions, TenantKey.class);
     }
 
     public TenantKey postPluginPaymentStateMachineConfigurationXMLForTenant(String pluginName, String pluginPaymentStateMachineConfigXML, RequestOptions inputOptions)
@@ -2321,13 +2357,13 @@ public TenantKey registerPluginPaymentStateMachineConfigurationForTenant(String 
                                                    .withFollowLocation(true)
                                                    .withHeader(KillBillHttpClient.HTTP_HEADER_CONTENT_TYPE, "text/plain")
                                                    .build();
-        return httpClient.doPost(uri, pluginPaymentStateMachineConfigXML, TenantKey.class, options);
+    return httpClient.doPost(uri, pluginPaymentStateMachineConfigXML, TenantKey.class, options);
     }
 
     public TenantKey getPluginPaymentStateMachineConfigurationForTenant(String pluginName, RequestOptions inputOptions)
 {
     String uri = Config.TENANTS_PATH + "/" + Config.UPLOAD_PLUGIN_PAYMENT_STATE_MACHINE_CONFIG + "/" + pluginName;
-        return httpClient.doGet(uri, TenantKey.class, inputOptions);
+    return httpClient.doGet(uri, TenantKey.class, inputOptions);
     }
 
     public void unregisterPluginPaymentStateMachineConfigurationForTenant(String pluginName, RequestOptions inputOptions)
@@ -2338,44 +2374,44 @@ public TenantKey registerPluginPaymentStateMachineConfigurationForTenant(String 
 
 public Permissions getPermissions(RequestOptions inputOptions)
 {
-        return httpClient.doGet(Config.SECURITY_PATH + "/permissions", Permissions.class, inputOptions);
+    return httpClient.doGet(Config.SECURITY_PATH + "/permissions", Permissions.class, inputOptions);
     }
 
    
 
 public Response addUserRoles(UserRoles userRoles, RequestOptions inputOptions)
 {
-        return httpClient.doPost(Config.SECURITY_PATH + "/users", userRoles, inputOptions);
+    return httpClient.doPost(Config.SECURITY_PATH + "/users", userRoles, inputOptions);
 }
 
 
 public Response updateUserPassword(String username, String newPassword, RequestOptions inputOptions)
 {
     String uri = Config.SECURITY_PATH + "/users/" + username + "/password";
-    UserRoles userRoles = new UserRoles(username, newPassword, ImmutableList.<String>of());
-        return httpClient.doPut(uri, userRoles, inputOptions);
-    }
+    UserRoles userRoles = new UserRoles(username, newPassword, ImmutableList.< String > of());
+    return httpClient.doPut(uri, userRoles, inputOptions);
+}
 
-    
+
 
 public Response updateUserRoles(String username, List<String> newRoles, RequestOptions inputOptions)
 {
     String uri = Config.SECURITY_PATH + "/users/" + username + "/roles";
     UserRoles userRoles = new UserRoles(username, null, newRoles);
-        return httpClient.doPut(uri, userRoles, inputOptions);
-    }
+    return httpClient.doPut(uri, userRoles, inputOptions);
+}
 
-   
+
 public Response invalidateUser(String username, RequestOptions inputOptions)
 {
     String uri = Config.SECURITY_PATH + "/users/" + username;
-        return httpClient.doDelete(uri, inputOptions);
+    return httpClient.doDelete(uri, inputOptions);
 }
 
 
 public Response addRoleDefinition(RoleDefinition roleDefinition, RequestOptions inputOptions)
 {
-        return httpClient.doPost(Config.SECURITY_PATH + "/roles", roleDefinition, inputOptions);
+    return httpClient.doPost(Config.SECURITY_PATH + "/roles", roleDefinition, inputOptions);
 }
 
 // Plugin endpoints
@@ -2417,9 +2453,12 @@ private String getResourceFile(String uri, String contentType, RequestOptions in
 {
     RequestOptions requestOptions = inputOptions.extend().withHeader(KillBillHttpClient.HTTP_HEADER_ACCEPT, contentType).build();
     Response response = httpClient.doGet(uri, requestOptions);
-        try {
+    try
+    {
         return response.getResponseBody("UTF-8");
-    } catch (IOException e) {
+    }
+    catch (IOException e)
+    {
         throw new KillBillClientException(e);
     }
 }
@@ -2428,23 +2467,29 @@ private <ReturnType> ReturnType uploadFile(String fileToUpload, String uri, Stri
 {
     Preconditions.checkNotNull(fileToUpload, "fileToUpload cannot be null");
     File catalogFile = new File(fileToUpload);
-Preconditions.checkArgument(catalogFile.exists() && catalogFile.isFile() && catalogFile.canRead(), "file to upload needs to be a valid file");
-        try {
-            String body = Files.toString(catalogFile, Charset.forName("UTF-8"));
-            return doUploadFile(body, uri, contentType, inputOptions, followUpClass);
-        } catch (IOException e) {
-            throw new KillBillClientException(e);
-        }
+    Preconditions.checkArgument(catalogFile.exists() && catalogFile.isFile() && catalogFile.canRead(), "file to upload needs to be a valid file");
+    try
+    {
+        String body = Files.toString(catalogFile, Charset.forName("UTF-8"));
+        return doUploadFile(body, uri, contentType, inputOptions, followUpClass);
     }
+    catch (IOException e)
+    {
+        throw new KillBillClientException(e);
+    }
+}
 
-    private <ReturnType> ReturnType uploadFile(InputStream fileToUpload, String uri, String contentType, RequestOptions inputOptions, Class<ReturnType> followUpClass)
+private <ReturnType> ReturnType uploadFile(InputStream fileToUpload, String uri, String contentType, RequestOptions inputOptions, Class<ReturnType> followUpClass)
 {
     Preconditions.checkNotNull(fileToUpload, "fileToUpload cannot be null");
-        try {
+    try
+    {
         Readable reader = new InputStreamReader(fileToUpload, Charset.forName("UTF-8"));
         String body = CharStreams.toString(reader);
         return doUploadFile(body, uri, contentType, inputOptions, followUpClass);
-    } catch (IOException e) {
+    }
+    catch (IOException e)
+    {
         throw new KillBillClientException(e);
     }
 }
@@ -2453,11 +2498,14 @@ private <ReturnType> ReturnType doUploadFile(String body, String uri, String con
 {
     RequestOptionsBuilder requestOptionsBuilder = inputOptions.extend().withHeader(KillBillHttpClient.HTTP_HEADER_CONTENT_TYPE, contentType);
 
-        if (followUpClass != null) {
+    if (followUpClass != null)
+    {
         Boolean followLocation = MoreObjects.firstNonNull(inputOptions.getFollowLocation(), Boolean.TRUE);
         RequestOptions requestOptions = requestOptionsBuilder.withFollowLocation(followLocation).build();
         return httpClient.doPost(uri, body, followUpClass, requestOptions);
-    } else {
+    }
+    else
+    {
         RequestOptions requestOptions = requestOptionsBuilder.build();
         httpClient.doPost(uri, body, requestOptions);
         return null;

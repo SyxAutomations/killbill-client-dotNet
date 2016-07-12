@@ -5,7 +5,6 @@ namespace Killbill_Client.model {
 
     public abstract class KillBillObject
     {
-
-        protected List<AuditLog> auditLogs;
+        public List<AuditLog> auditLogs { get; set; }
     }
 }

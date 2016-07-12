@@ -14,12 +14,16 @@
  * under the License.
  */
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Killbill_Client;
 using Killbill_Client.model;
 
 namespace Killbill_Client.model {
     
-public abstract class KillBillObjects<T : KillBillObject> : ArrayList<T> {
+public abstract class KillBillObjects<T> : List<T> where T : KillBillObject {
 
     
     private KillBillHttpClient killBillHttpClient;
@@ -40,7 +44,7 @@ public abstract class KillBillObjects<T : KillBillObject> : ArrayList<T> {
     private string paginationNextPageUri;
 
     
-    public <U : KillBillObjects<T>> U getNext(Class<U> clazz) {
+    public T getNext<T>(Type clazz) {
         if (killBillHttpClient == null || paginationNextPageUri == null) {
             return null;
         }

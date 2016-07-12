@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Text;
 
 namespace Killbill_Client.model
@@ -17,7 +18,7 @@ namespace Killbill_Client.model
         private string transactionType;
         private DateTime effectiveDate;
         private string status;
-        private BigDecimal amount;
+        private BigInteger amount;
         private string currency;
         private string gatewayErrorCode;
         private string gatewayErrorMsg;
@@ -25,13 +26,7 @@ namespace Killbill_Client.model
         private string firstPaymentReferenceId;
         private string secondPaymentReferenceId;
         // Avoid null iterable field
-        private List<PluginProperty> properties = ImmutableList.<
-        PluginProperty
-    >
-        of();
-
-
-
+        private List<PluginProperty> properties;
 
         public string ToString()
         {
@@ -68,7 +63,7 @@ namespace Killbill_Client.model
 
             PaymentTransaction that = (PaymentTransaction)o;
 
-            if (amount != null ? amount.compareTo(that.amount) != 0 : that.amount != null)
+            if (amount != null ? amount.CompareTo(that.amount) != 0 : that.amount != null)
             {
                 return false;
             }
